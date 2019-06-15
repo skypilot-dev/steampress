@@ -1,0 +1,21 @@
+# Editor directories and files
+ /.idea/
+ /.vscode/
+ .*.swp
+
+# Generated files
+/dist/
+
+# Local-only files
+/local/
+
+# Temporary files
+/tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# NPM
+/node_modules/
+npm-debug.log*
