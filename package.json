@@ -1,0 +1,22 @@
+{
+  "name": "@skypilot/steampress",
+  "version": "0.1.0",
+  "description": "Parse, filter, and transform messy spreadsheets into clean object data",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {},
+  "keywords": [
+    "file",
+    "conversion",
+    "converter",
+    "excel",
+    "json",
+    "parse",
+    "spreadsheet",
+    "transform"
+  ],
+  "author": "William Thorsen",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+}
