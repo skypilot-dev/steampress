@@ -4,7 +4,9 @@
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "scripts": {},
+  "scripts": {
+    "build": "babel ./src -d ./lib --extensions .ts"
+  },
   "keywords": [
     "file",
     "conversion",
@@ -17,6 +19,16 @@
   ],
   "author": "William Thorsen",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/runtime": "^7.4.5"
+  },
   "dependencies": {}
 }
