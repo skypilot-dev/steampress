@@ -40,6 +40,7 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
+    "@skypilot/sugarbowl": "^0.2.0",
     "convert-excel-to-json": "^1.6.1"
   }
 }
