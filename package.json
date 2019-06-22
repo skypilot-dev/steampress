@@ -39,5 +39,7 @@
     "prettier": "^1.18.2",
     "typescript": "^3.5.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "convert-excel-to-json": "^1.6.1"
+  }
 }
