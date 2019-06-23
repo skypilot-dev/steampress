@@ -6,6 +6,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "babel ./src -d ./lib --extensions .ts --ignore '**/*.test.ts'",
+    "check-types": "tsc",
     "generate-typings": "tsc --project tsconfig.generate-typings.json",
     "prepublishOnly": "npm run build && npm run generate-typings"
   },
@@ -43,7 +44,7 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@skypilot/sugarbowl": "^0.2.0",
+    "@skypilot/sugarbowl": "^0.3.2",
     "convert-excel-to-json": "^1.6.1"
   }
 }
