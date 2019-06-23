@@ -1,5 +1,6 @@
 import { parseExcelSheet, ParseExcelSheetOptions } from './parseExcelSheet';
 
+
 const fakeExcelSheetWithHeaderRow = [
   {
     A: 'Key',
@@ -15,7 +16,7 @@ const fakeExcelSheetWithHeaderRow = [
   },
 ];
 
-const structure: ParseExcelSheetOptions = {
+const options: ParseExcelSheetOptions = {
   columns: {
     A: {
       expectedHeader: 'Key',
@@ -33,16 +34,55 @@ const structure: ParseExcelSheetOptions = {
   hasHeader: true,
 };
 
-describe('parseExcel()', () => {
 
-    const expectedObjects = [{
+describe('parseExcel()', () => {
+  const expectedObjects = [
+    {
       key: 'some-key',
       value: 'some-value',
       notes: 'a line of notes',
-    }];
+    },
+  ];
 
-    it('should transform the sheet into the expected structure', () => {
-        const parsedSheet = parseExcelSheet(fakeExcelSheetWithHeaderRow, structure);
-        expect(parsedSheet).toEqual(expectedObjects);
-    });
+
+  it('should transform the sheet into the expected structure', () => {
+    const parsedSheet = parseExcelSheet(fakeExcelSheetWithHeaderRow, options);
+    expect(parsedSheet).toEqual(expectedObjects);
+  });
+
+  /* TODO: Add test of the `disallowEmptyCells` flags */
+
+
+  it(`should apply the sheet's cellPretransformers, then the column's own transformers`, () => {
+    function hyphensToSpaces(str: string): string {
+      return str.replace('-', ' ');
+    }
+
+    function removeFirstWord(str: string): string {
+      const words = str.split(' ');
+      const phraseWithRemovedFirstWord = words.slice(1).join(' ');
+      return phraseWithRemovedFirstWord;
+    }
+
+    function uppercase(str: string): string {
+      return str.toUpperCase();
+    }
+
+    options.cellPretransformers = [hyphensToSpaces];
+
+    options.columns.A.transformers = [uppercase];
+
+    options.columns.C.transformers = [removeFirstWord];
+
+    const expectedTransformedObjects = [
+      {
+        key: 'SOME KEY',
+        value: 'some value',
+        notes: 'line of notes',
+      },
+    ];
+
+    const parsedSheet = parseExcelSheet(fakeExcelSheetWithHeaderRow, options);
+    expect(parsedSheet).toEqual(expectedTransformedObjects);
+  });
 });

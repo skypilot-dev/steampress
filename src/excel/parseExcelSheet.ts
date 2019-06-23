@@ -1,34 +1,54 @@
-/* TODO: Correctly handle date values from Excel sheets */
-
-
 import { isValidDate } from '@skypilot/sugarbowl';
 
-import { ExcelRow, ExcelSheet, Transformer, Validator } from './types';
+import { removeExtraWhitespace } from '../transformers';
 
 
-interface Column {
+interface ParseColumnOptions {
   expectedHeader?: string;
+  disallowEmptyCells?: boolean;
   outputProperty: string;
   transformers?: Transformer[];
   validators?: Validator[];
 }
 
-export interface ParseExcelSheetOptions {
-  columns: {
-    [columnLetter: string]:  Column;
-  };
-  hasHeader?: boolean;
+export type ExcelSheet = ExcelRow[];
+
+interface ExcelRow {
+  [columnLetter: string]: any;
 }
 
+export interface ParseExcelSheetOptions {
+  columns: {
+    [columnLetter: string]:  ParseColumnOptions;
+  };
+  disallowEmptyCells?: boolean;
+  hasHeader?: boolean;
+  /* TODO: Possibly add `cellPosttransformers` */
+  cellPretransformers?: Transformer[];
+  rowTransformers?: Transformer[];
+  /* TODO: Possibly rename to indicate that these transformers apply to the entire sheet */
+  transformers?: ObjectArrayTransformer[];
+  verbose?: boolean;
+}
 
-/* -- Helper functions -- */
-/* Confirm that headers contain the expected values. */
+type ObjectArrayTransformer = (value: object[]) => object[];
+
+type Transformer = (value: any) => any;
+
+type Validator = (value) => boolean;
+
+
+// -- Helper functions
+
+// Confirm that headers contain the expected values.
 export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOptions): boolean {
   for (const [letter, value] of Object.entries(row)) {
+
     const columnStructure = sheetStructure.columns[letter];
+
     if (columnStructure && columnStructure.expectedHeader) {
       const expectedHeader = columnStructure.expectedHeader;
-      const actualHeader = value;
+      const actualHeader = removeExtraWhitespace(value);
       if (expectedHeader !== actualHeader) {
         console.log(`Expected header '${expectedHeader}', found header '${actualHeader}'`);
         return false;
@@ -37,15 +57,28 @@ export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOpt
   }
   return true;
 }
-/* -- End of helper functions -- */
 
-/* Given the JSON representation of an Excel spreadsheet, transform the data into an array
- * of objects representing the rows of the spreadsheet, selecting only the columns specified in the
- * options. Optionally, also apply additional transformations. */
-export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelSheetOptions) {
+
+function doTransforms(initialValue: any, transformers: Transformer[]): any {
+  let transformedValue = initialValue;
+  transformers.forEach((transformer) => {
+    transformedValue = transformer(transformedValue);
+  });
+  return transformedValue;
+}
+
+// -- End of helper functions
+
+
+export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelSheetOptions): object[] {
 
   const {
+    disallowEmptyCells: disallowEmptyCellsInRow = false,
     hasHeader = false,
+    cellPretransformers = [],
+    rowTransformers = [],
+    transformers = [],
+    verbose = false,
   } = sheetStructure;
 
   let startingRowIndex;
@@ -70,23 +103,62 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
     // Initialize the object
     const rowAsObj = {};
 
+
+    /* TODO: Refactor exclusion of empty cells */
+    let containsDisallowedEmptyCells = false;
+
     // Copy each desired column value to the corresponding `outputProperty` field on the new object
     desiredColumnLetters.forEach((columnLetter) => {
-      const { outputProperty } = sheetStructure.columns[columnLetter];
 
-      const value = row[columnLetter];
-      if (!['number', 'string', 'undefined'].includes(typeof value)) {
+      const {
+        disallowEmptyCells: disallowEmptyCellsInColumn = false,
+        outputProperty,
+        transformers = [],
+      } = sheetStructure.columns[columnLetter];
+
+      const initialValue = row[columnLetter];
+      if (!['number', 'string', 'undefined'].includes(typeof initialValue)) {
         /* The only supported object type is Date */
-        if (!isValidDate(value)) {
-          throw new Error(`Unrecognized type: ${typeof value}`);
+        if (!isValidDate(initialValue)) {
+          throw new Error(`Unrecognized type: ${typeof initialValue}`);
         }
       }
 
-      rowAsObj[outputProperty] = row[columnLetter];
+      let finalValue;
+      if (typeof initialValue === 'undefined') {
+        if (disallowEmptyCellsInRow || disallowEmptyCellsInColumn) {
+          /* Cell is empty, so don't add it to the table */
+          /* TODO: Add option to allow or disallow exclusions */
+          if (verbose) {
+            console.log(`WARNING: Row ${i} contains no value for '${outputProperty}'`);
+          }
+          containsDisallowedEmptyCells = true;
+          return;
+        } else {
+          finalValue = null;
+        }
+      } else {
+        finalValue = doTransforms(initialValue, [
+          ...cellPretransformers,
+          ...transformers,
+        ]);
+      }
+      rowAsObj[outputProperty] = finalValue;
     });
 
-    table.push(rowAsObj);
+    if (containsDisallowedEmptyCells) {
+      if (verbose) {
+        console.log(`Row ${i} has been excluded because it is missing required values`);
+      }
+    } else {
+      const finalRowObj = doTransforms(rowAsObj, rowTransformers);
+      table.push(finalRowObj);
+    }
   }
 
-  return table;
+  let transformedTable = table;
+  transformers.forEach((transformFn) => {
+    transformedTable = transformFn(transformedTable);
+  });
+  return transformedTable;
 }
