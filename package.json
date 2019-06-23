@@ -1,12 +1,13 @@
 {
   "name": "@skypilot/steampress",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha",
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "babel ./src -d ./lib --extensions .ts --ignore '**/*.test.ts'",
-    "prepublishOnly": "npm run build"
+    "generate-typings": "tsc --project tsconfig.generate-typings.json",
+    "prepublishOnly": "npm run build && npm run generate-typings"
   },
   "keywords": [
     "file",
