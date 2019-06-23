@@ -9,7 +9,6 @@ describe('excelSheetToJson', () => {
   let row1;
   it('should get a sheet from the loader', () => {
     sheetAsJson = excelSheetToJson({ source: fakeFileName, sheetName: fakeSheetName });
-    console.log('sheetAsJson:', sheetAsJson);
     expect(typeof sheetAsJson).toBe('object');
   });
 
