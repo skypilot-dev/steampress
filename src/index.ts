@@ -1,1 +1,1 @@
-export { convertExcelSheetToJson } from './excel/convertExcelSheetToJson';
+export * from './excel';
