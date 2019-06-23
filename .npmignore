@@ -1,0 +1,15 @@
+# For default exclusions, see: https://docs.npmjs.com/misc/developers
+/.idea/
+/.vscode/
+
+# Local-only files
+/local/
+
+# Non-production files
+/src/
+
+.prettierrc.js
+babel.config.js
+package-lock.json
+tsconfig.generate-typings.json
+tsconfig.json

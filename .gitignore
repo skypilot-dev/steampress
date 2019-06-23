@@ -9,13 +9,15 @@
 # Local-only files
 /local/
 
-# Temporary files
-/tmp/
+# NPM
+/lib/
+/node_modules/
+npm-debug.log*
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# NPM
-/node_modules/
-npm-debug.log*
+# Temporary files
+/tmp/
+*.tmp

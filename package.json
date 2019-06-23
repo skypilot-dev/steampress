@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "babel ./src -d ./lib --extensions .ts"
+    "build": "babel ./src -d ./lib --extensions .ts --ignore '**/*.test.ts'",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "file",
