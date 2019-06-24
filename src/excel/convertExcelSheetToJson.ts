@@ -4,7 +4,6 @@ import { formatAsJson } from '../exporters/formatAsJson';
 import { formatAsTypeScript, TypeScriptFormatterOptions } from '../exporters/formatAsTypeScript';
 import { writeTextToFile } from '../filesystem/writeTextToFile';
 
-
 export interface ConvertExcelSheetToJsonOptions {
   noEmit?: boolean;
   source: string;
@@ -13,7 +12,7 @@ export interface ConvertExcelSheetToJsonOptions {
   outDir?: string;
   outFile?: string;
   outFormat?: 'json' | 'typescript';
-  formatterOptions: TypeScriptFormatterOptions | {};
+  formatterOptions?: TypeScriptFormatterOptions | {};
   parserOptions: ParseExcelSheetOptions;
 }
 

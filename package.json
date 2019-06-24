@@ -1,6 +1,6 @@
 {
   "name": "@skypilot/steampress",
-  "version": "0.4.0-alpha",
+  "version": "0.4.1-alpha",
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
