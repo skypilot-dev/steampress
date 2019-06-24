@@ -1,12 +1,18 @@
+import { isValidDate } from '@skypilot/sugarbowl';
+import { existsSync } from 'fs';
+
 import { convertExcelSheetToJson, ConvertExcelSheetToJsonOptions } from './convertExcelSheetToJson';
 import { excelSheetToJson } from './excelSheetToJson';
 import { confirmHeaders } from './parseExcelSheet';
-import { isValidDate } from '@skypilot/sugarbowl';
 
 const converterOptions: ConvertExcelSheetToJsonOptions = {
   source: 'tests/fakes/excel-converter-fake.xlsx',
   sheetName: 'Sheet1',
+  noEmit: true,
   outDir: 'tmp/tests-output',
+  formatterOptions: {
+    outputType: 'QuestionCreateInput[]',
+  },
   parserOptions: {
     columns: {
       A: {
@@ -90,6 +96,34 @@ describe('convertExcelSheetToJson', () => {
       expect(dateValue.getFullYear()).toBe(1989);
       expect(dateValue.getMonth() + 1).toBe(1);
       expect(dateValue.getDate() + 1).toBe(28);
+    });
+
+    it('should by default save to a JSON file', () => {
+      const options = {
+        ...converterOptions,
+        noEmit: false,
+      };
+      const expectedFilename = `${options.sheetName}.json`;
+      convertExcelSheetToJson(options);
+      const fileExists = existsSync(`${options.outDir}/${expectedFilename}`);
+      expect(fileExists).toBe(true);
+    });
+
+
+    it('can save to a TypeScript file', () => {
+      const options: ConvertExcelSheetToJsonOptions = {
+        ...converterOptions,
+        outFormat: 'typescript',
+        noEmit: false,
+        formatterOptions: {
+          declaredType: 'SampleInterface[]',
+        },
+      };
+
+      const expectedFilename = `${options.sheetName}.ts`;
+      convertExcelSheetToJson(options);
+      const fileExists = existsSync(`${options.outDir}/${expectedFilename}`);
+      expect(fileExists).toBe(true);
     });
   });
 });

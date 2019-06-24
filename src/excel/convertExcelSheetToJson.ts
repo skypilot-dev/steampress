@@ -1,6 +1,8 @@
 import { excelSheetToJson } from './excelSheetToJson';
 import { parseExcelSheet, ParseExcelSheetOptions } from './parseExcelSheet';
-import { writeToFile } from '../filesystem/writeToFile';
+import { formatAsJson } from '../exporters/formatAsJson';
+import { formatAsTypeScript, TypeScriptFormatterOptions } from '../exporters/formatAsTypeScript';
+import { writeTextToFile } from '../filesystem/writeTextToFile';
 
 
 export interface ConvertExcelSheetToJsonOptions {
@@ -10,20 +12,33 @@ export interface ConvertExcelSheetToJsonOptions {
   url?: string;
   outDir?: string;
   outFile?: string;
+  outFormat?: 'json' | 'typescript';
+  formatterOptions: TypeScriptFormatterOptions | {};
   parserOptions: ParseExcelSheetOptions;
 }
 
-export function convertExcelSheetToJson(options: ConvertExcelSheetToJsonOptions) {
+const formats = {
+  json: {
+    extension: 'json',
+    formatter: formatAsJson,
+  },
+  typescript: {
+    extension: 'ts',
+    formatter: formatAsTypeScript,
+  },
+};
+
+export function convertExcelSheetToJson(options: ConvertExcelSheetToJsonOptions): object[] {
   const {
     noEmit = false,
     source,
     sheetName,
     outDir = './output',
     outFile = '',
+    outFormat = 'json',
+    formatterOptions = {},
     parserOptions,
   } = options;
-
-  const baseName = outFile || sheetName;
 
   const excelAsJson = excelSheetToJson({ source, sheetName });
   const parsedExcel = parseExcelSheet(excelAsJson, parserOptions);
@@ -32,10 +47,15 @@ export function convertExcelSheetToJson(options: ConvertExcelSheetToJsonOptions)
     if (!outDir) {
       throw new Error('An output directory must be specified with `outDir` unless `noEmit` is true.');
     }
-    writeToFile(parsedExcel, {
-      baseName,
-      format: 'json',
-      outDir,
+
+    const { extension, formatter } = formats[outFormat];
+
+    const outputText = formatter(parsedExcel, formatterOptions);
+    const fileName = outFile || `${sheetName}.${extension}`;
+
+    writeTextToFile(outputText, {
+      dirName: outDir,
+      fileName,
     })
   }
   return parsedExcel;
