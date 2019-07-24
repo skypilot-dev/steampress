@@ -9,8 +9,8 @@ export function formatAsTypeScript(data: object, options: TypeScriptFormatterOpt
     declaredType = '',
   } = options;
 
-  const typePhrase = declaredType ? ` as ${declaredType}` : '';
+  const typeCast = declaredType ? `<${declaredType}>` : '';
 
   const jsonData = formatAsJson(data);
-  return `export default ${jsonData}${typePhrase};`;
+  return `export default ${typeCast}${jsonData};`;
 }
