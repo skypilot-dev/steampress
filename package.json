@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "babel ./src -d ./lib --extensions .ts --ignore '**/*.test.ts'",
+    "build": "rm -rf lib && babel ./src -d ./lib --extensions .ts --ignore '**/*.test.ts'",
     "check-types": "tsc",
     "generate-typings": "tsc --project tsconfig.generate-typings.json",
     "prepublishOnly": "npm run build && npm run generate-typings"
