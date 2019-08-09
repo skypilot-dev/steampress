@@ -1,6 +1,6 @@
 {
   "name": "@skypilot/steampress",
-  "version": "0.5.1-alpha",
+  "version": "0.5.2-alpha",
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -46,5 +46,8 @@
   "dependencies": {
     "@skypilot/sugarbowl": "^0.6.3",
     "convert-excel-to-json": "^1.6.1"
-  }
+  },
+  "files": [
+    "/lib"
+  ]
 }
