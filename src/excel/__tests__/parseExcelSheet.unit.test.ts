@@ -1,4 +1,4 @@
-import { parseExcelSheet, ParseExcelSheetOptions } from './parseExcelSheet';
+import { parseExcelSheet, ParseExcelSheetOptions } from '../parseExcelSheet';
 
 
 const fakeExcelSheetWithHeaderRow = [

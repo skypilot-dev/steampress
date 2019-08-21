@@ -1,4 +1,4 @@
-import { excelSheetToJson } from './excelSheetToJson';
+import { excelSheetToJson } from '../excelSheetToJson';
 
 const fakeFileName = 'tests/fakes/excel-converter-fake.xlsx';
 const fakeSheetName = 'Sheet1';

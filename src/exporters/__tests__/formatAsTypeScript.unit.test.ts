@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 
-import { formatAsTypeScript } from './formatAsTypeScript';
+import { formatAsTypeScript } from '../formatAsTypeScript';
 
 describe('formatAsTypeScript()', () => {
   it('should export an object as the default object encoded in JSON', () => {

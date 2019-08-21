@@ -1,6 +1,6 @@
 import { rmdirSync } from 'fs';
 
-import { createDirIfNonexistent } from './createDirIfNonexistent';
+import { createDirIfNonexistent } from '../createDirIfNonexistent';
 
 describe('createDirIfNonexistent', () => {
   it('should return false if the dir exists', () => {

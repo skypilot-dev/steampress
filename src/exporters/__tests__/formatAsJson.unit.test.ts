@@ -1,4 +1,4 @@
-import { formatAsJson } from './formatAsJson';
+import { formatAsJson } from '../formatAsJson';
 
 describe('formatAsJson()', () => {
   it('should convert an object to Json', () => {

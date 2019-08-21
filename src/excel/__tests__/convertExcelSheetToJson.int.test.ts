@@ -1,9 +1,9 @@
 import { isValidDate } from '@skypilot/sugarbowl';
 import { existsSync } from 'fs';
 
-import { convertExcelSheetToJson, ConvertExcelSheetToJsonOptions } from './convertExcelSheetToJson';
-import { excelSheetToJson } from './excelSheetToJson';
-import { confirmHeaders } from './parseExcelSheet';
+import { convertExcelSheetToJson, ConvertExcelSheetToJsonOptions } from '../convertExcelSheetToJson';
+import { excelSheetToJson } from '../excelSheetToJson';
+import { confirmHeaders } from '../parseExcelSheet';
 
 const converterOptions: ConvertExcelSheetToJsonOptions = {
   source: 'tests/fakes/excel-converter-fake.xlsx',

@@ -1,4 +1,4 @@
-import { duplicateProperty } from './duplicateProperty';
+import { duplicateProperty } from '../duplicateProperty';
 
 describe('duplicateProperty()', () => {
 
