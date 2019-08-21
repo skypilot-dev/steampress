@@ -1,6 +1,7 @@
 import { isValidDate } from '@skypilot/sugarbowl';
 
 import { removeExtraWhitespace } from '../transformers';
+import { ExcelRow, ExcelSheet } from './types';
 
 
 interface ParseColumnOptions {
@@ -9,12 +10,6 @@ interface ParseColumnOptions {
   outputProperty: string;
   transformers?: Transformer[];
   validators?: Validator[];
-}
-
-export type ExcelSheet = ExcelRow[];
-
-interface ExcelRow {
-  [columnLetter: string]: any;
 }
 
 export interface ParseExcelSheetOptions {
