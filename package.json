@@ -1,6 +1,6 @@
 {
   "name": "@skypilot/steampress",
-  "version": "0.5.2-alpha",
+  "version": "0.5.3-alpha",
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -32,19 +32,19 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
     "@babel/runtime": "^7.5.5",
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.6.8",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
-    "babel-jest": "^24.8.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-jest": "^22.13.6",
-    "jest": "^24.8.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.2",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.2.1",
+    "eslint-plugin-jest": "^22.15.1",
+    "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@skypilot/sugarbowl": "^0.6.3",
+    "@skypilot/sugarbowl": "^0.10.0",
     "convert-excel-to-json": "^1.6.1"
   },
   "files": [
