@@ -42,8 +42,9 @@ type Validator = (value) => boolean;
 
 // Confirm that headers contain the expected values.
 export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOptions): boolean {
-  for (const [letter, value] of Object.entries(row)) {
-
+  const entries = Object.entries(row);
+  for (let i = 0; i < entries.length; i += 1) {
+    const [letter, value] = entries[i];
     const columnStructure = sheetStructure.columns[letter];
 
     if (columnStructure && columnStructure.expectedHeader) {
