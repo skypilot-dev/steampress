@@ -11,7 +11,7 @@ export interface WriteToFileOptions {
 }
 
 /* -- Helper functions */
-function createDirIfNonexistent(dir: string) {
+function createDirIfNonexistent(dir: string): void {
   if (!existsSync(dir)){
     mkdirSync(dir);
   }
@@ -22,7 +22,7 @@ export function writeToFile(obj, {
   baseName,
   // format = 'json',
   outDir = '.',
-}: WriteToFileOptions) {
+}: WriteToFileOptions): void {
 
   if (!baseName.includes('.')) {
     baseName += '.json';
