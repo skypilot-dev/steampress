@@ -14,4 +14,5 @@ export {
   trimRight,
 } from '@skypilot/sugarbowl';
 
+export { addProperty } from './addProperty';
 export { duplicateProperty } from './duplicateProperty';

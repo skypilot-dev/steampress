@@ -7,6 +7,7 @@ const intendedExports = [
   'parseExcelSheet',
 
   /* -- Transformations */
+  'addProperty',
   'duplicateProperty',
 
   /* re-exported string functions */
