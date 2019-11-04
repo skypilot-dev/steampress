@@ -29,6 +29,8 @@
     // Display pretty output
     "pretty": true,
 
+    "resolveJsonModule": true,
+
     "skipLibCheck": true,
 
     "sourceMap": true,
