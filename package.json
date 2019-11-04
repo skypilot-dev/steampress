@@ -8,7 +8,8 @@
     "build": "rm -rf lib && babel ./src -d ./lib --extensions .ts --ignore '**/*.test.ts'",
     "check-types": "tsc",
     "generate-typings": "tsc --project tsconfig.generate-typings.json",
-    "prepublishOnly": "yarn run build && yarn run generate-typings"
+    "prepublishOnly": "yarn check-types && yarn test && yarn run build && yarn run generate-typings",
+    "test": "jest"
   },
   "keywords": [
     "file",
