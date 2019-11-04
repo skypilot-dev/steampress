@@ -94,8 +94,9 @@ describe('convertExcelSheetToJson', () => {
       const dateValue = formulaProps[0];
       expect(isValidDate(dateValue)).toBe(true);
       expect(dateValue.getFullYear()).toBe(1989);
+      /* Note that `getMonth()` returns a 0-indexed value for the month. */
       expect(dateValue.getMonth() + 1).toBe(1);
-      expect(dateValue.getDate() + 1).toBe(28);
+      expect(dateValue.getDate()).toBe(28);
     });
 
     it('should by default save to a JSON file', () => {
