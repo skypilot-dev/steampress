@@ -12,7 +12,7 @@ describe('duplicateProperty()', () => {
     },
   };
 
-  let newObj;
+  let newObj: any;
   it('should return an object with all properties of the original object', () => {
     newObj = duplicateProperty('source', 'target', originalObj);
     expect(newObj).toHaveProperty('source');
@@ -37,10 +37,10 @@ describe('duplicateProperty()', () => {
 
 
   it('should correctly copy (not clone) a source property that holds an object', () => {
-    let objWithObjectSource = {
+    const objWithObjectSource = {
       source: { arrayProp: ['a', 'b', 'c'] },
     };
-    const newObj = duplicateProperty('source', 'target', objWithObjectSource);
+    const newObj: any = duplicateProperty('source', 'target', objWithObjectSource);
     expect(newObj['target']).toEqual(objWithObjectSource.source);
 
     /* Revise this test if deep merging is implemented */
@@ -51,7 +51,7 @@ describe('duplicateProperty()', () => {
 
   it('should be able to copy `null` from source to target', () => {
     const objWithNull = { source: null };
-    const newObj = duplicateProperty('source', 'target', objWithNull);
+    const newObj: any = duplicateProperty('source', 'target', objWithNull);
 
     expect(newObj).toHaveProperty('target');
     expect(newObj['target']).toBeNull();

@@ -30,7 +30,7 @@ type ObjectArrayTransformer = (value: object[]) => object[];
 
 type Transformer = (value: any) => any;
 
-type Validator = (value) => boolean;
+type Validator = (value: any) => boolean;
 
 
 // -- Helper functions
@@ -82,7 +82,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
     startingRowIndex = 1;
     // It is assumed that headers, if any, are in the first row only
     if (!confirmHeaders(rows[0], sheetStructure)) {
-      throw new Error(`Headers do not contain the expected values`);
+      throw new Error('Headers do not contain the expected values');
     }
   } else {
     startingRowIndex = 0;
@@ -97,7 +97,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
     const row = rows[i];
 
     // Initialize the object
-    const rowAsObj = {};
+    const rowAsObj: { [key: string]: any } = {};
 
 
     /* TODO: Refactor exclusion of empty cells */

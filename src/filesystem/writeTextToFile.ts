@@ -10,7 +10,7 @@ export interface WriteTextToFileOptions {
   fileName: string;
 }
 
-export function writeTextToFile(data, options: WriteTextToFileOptions): void {
+export function writeTextToFile(data: any, options: WriteTextToFileOptions): void {
 
   const { dirName, fileName } = options;
 

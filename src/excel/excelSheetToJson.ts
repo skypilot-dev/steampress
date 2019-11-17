@@ -4,8 +4,14 @@ import {readFileSync } from 'fs';
 import { ExcelSheet } from './types';
 
 
+interface ExcelSheetToJsonOptions {
+  source: string;
+  sheetName: string;
+}
+
+
 /* Read one sheet from the specified Excel file and return it as a JSON object */
-export function excelSheetToJson({ source, sheetName }): ExcelSheet {
+export function excelSheetToJson({ source, sheetName }: ExcelSheetToJsonOptions): ExcelSheet {
 
   const file = readFileSync(source);
 

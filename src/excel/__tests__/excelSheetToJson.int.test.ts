@@ -1,12 +1,13 @@
 import { excelSheetToJson } from '../excelSheetToJson';
+import { ExcelRow, ExcelSheet } from '../types';
 
 const fakeFileName = 'tests/fakes/excel-converter-fake.xlsx';
 const fakeSheetName = 'Sheet1';
 
 describe('excelSheetToJson', () => {
 
-  let sheetAsJson;
-  let row1;
+  let sheetAsJson: ExcelSheet;
+  let row1: ExcelRow;
   it('should get a sheet from the loader', () => {
     sheetAsJson = excelSheetToJson({ source: fakeFileName, sheetName: fakeSheetName });
     expect(typeof sheetAsJson).toBe('object');
