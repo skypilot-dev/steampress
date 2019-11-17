@@ -1,9 +1,13 @@
-import { excelSheetToJson } from './excelSheetToJson';
-import { parseExcelSheet, ParseExcelSheetOptions } from './parseExcelSheet';
+/* -- Imports -- */
 import { formatAsJson } from '../exporters/formatAsJson';
 import { formatAsTypeScript, TypeScriptFormatterOptions } from '../exporters/formatAsTypeScript';
 import { writeTextToFile } from '../filesystem/writeTextToFile';
 
+import { excelSheetToJson } from './excelSheetToJson';
+import { parseExcelSheet, ParseExcelSheetOptions } from './parseExcelSheet';
+
+
+/* -- Typings -- */
 export interface ConvertExcelSheetToJsonOptions {
   noEmit?: boolean;
   source: string;
@@ -16,6 +20,8 @@ export interface ConvertExcelSheetToJsonOptions {
   parserOptions: ParseExcelSheetOptions;
 }
 
+
+/* -- Constants -- */
 const formats = {
   json: {
     extension: 'json',
@@ -27,6 +33,7 @@ const formats = {
   },
 };
 
+/* -- Main function -- */
 export function convertExcelSheetToJson(options: ConvertExcelSheetToJsonOptions): object[] {
   const {
     noEmit = false,

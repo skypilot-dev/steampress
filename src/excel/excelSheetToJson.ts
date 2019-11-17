@@ -1,15 +1,19 @@
-import excelToJson from 'convert-excel-to-json';
+/* -- Imports -- */
 import {readFileSync } from 'fs';
+
+import excelToJson from 'convert-excel-to-json';
 
 import { ExcelSheet } from './types';
 
 
+/* -- Typings -- */
 interface ExcelSheetToJsonOptions {
   source: string;
   sheetName: string;
 }
 
 
+/* -- Main function -- */
 /* Read one sheet from the specified Excel file and return it as a JSON object */
 export function excelSheetToJson({ source, sheetName }: ExcelSheetToJsonOptions): ExcelSheet {
 

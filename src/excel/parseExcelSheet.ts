@@ -1,9 +1,12 @@
+/* -- Imports -- */
 import { isValidDate } from '@skypilot/sugarbowl';
 
 import { removeExtraWhitespace } from '../transformers';
+
 import { ExcelRow, ExcelSheet } from './types';
 
 
+/* -- Typings -- */
 interface ParseColumnOptions {
   expectedHeader?: string;
   disallowEmptyCells?: boolean;
@@ -33,8 +36,7 @@ type Transformer = (value: any) => any;
 type Validator = (value: any) => boolean;
 
 
-// -- Helper functions
-
+/* -- Helper functions -- */
 // Confirm that headers contain the expected values.
 export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOptions): boolean {
   const entries = Object.entries(row);
@@ -54,7 +56,6 @@ export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOpt
   return true;
 }
 
-
 function doTransforms(initialValue: any, transformers: Transformer[]): any {
   let transformedValue = initialValue;
   transformers.forEach((transformer) => {
@@ -63,11 +64,9 @@ function doTransforms(initialValue: any, transformers: Transformer[]): any {
   return transformedValue;
 }
 
-// -- End of helper functions
 
-
+/* -- Main function -- */
 export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelSheetOptions): object[] {
-
   const {
     disallowEmptyCells: disallowEmptyCellsInRow = false,
     hasHeader = false,
