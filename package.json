@@ -5,11 +5,14 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "rm -rf lib && babel ./src -d ./lib --extensions .ts --ignore '**/*.test.ts'",
+    "build": "rm -rf lib && yarn run compile-ts",
     "check-types": "tsc",
     "generate-typings": "tsc --project tsconfig.generate-typings.json",
-    "prepublishOnly": "yarn check-types && yarn test && yarn run build && yarn run generate-typings",
-    "test": "jest"
+    "prepublishOnly": "yarn run check-types && yarn run lint --quiet && yarn test && yarn run build && yarn run generate-typings",
+    "test": "jest",
+    "all-ci-checks": "yarn run check-types && yarn run lint --quiet && yarn test && yarn run build",
+    "compile-ts": "babel ./src --out-dir ./lib --extensions .ts --ignore '**/*.test.ts'",
+    "lint": "eslint --cache '**/*.{js,ts}'"
   },
   "keywords": [
     "file",
@@ -23,7 +26,9 @@
   ],
   "author": "William Thorsen",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "@skypilot/toolchain": "^0.4.16-alpha"
+  },
   "dependencies": {
     "@skypilot/sugarbowl": "^0.10.3",
     "convert-excel-to-json": "^1.6.1"
