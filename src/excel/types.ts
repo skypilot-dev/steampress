@@ -4,6 +4,6 @@ export interface ExcelRow {
   [columnLetter: string]: any;
 }
 
-export type Transformer = (value) => any;
+export type Transformer = (value: any) => any;
 
-export type Validator = (value) => boolean;
+export type Validator = (value: any) => boolean;

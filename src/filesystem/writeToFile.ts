@@ -18,7 +18,7 @@ function createDirIfNonexistent(dir: string): void {
 }
 /* -- End of helper functions */
 
-export function writeToFile(obj, {
+export function writeToFile(obj: object, {
   baseName,
   // format = 'json',
   outDir = '.',
