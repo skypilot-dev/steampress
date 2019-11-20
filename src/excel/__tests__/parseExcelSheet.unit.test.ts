@@ -70,9 +70,9 @@ describe('parseExcel()', () => {
 
     options.cellPretransformers = [hyphensToSpaces];
 
-    options.columns.A.transformers = [uppercase];
+    options.columns.A.cellTransformers = [uppercase];
 
-    options.columns.C.transformers = [removeFirstWord];
+    options.columns.C.cellTransformers = [removeFirstWord];
 
     const expectedTransformedObjects = [
       {

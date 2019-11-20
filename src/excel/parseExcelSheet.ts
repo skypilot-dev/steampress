@@ -8,10 +8,11 @@ import { ExcelRow, ExcelSheet } from './types';
 
 /* -- Typings -- */
 interface ParseColumnOptions {
+  cellTransformers?: Transformer[];
+  /* TODO: If the need arises, add a `columnTransformers` property. */
   expectedHeader?: string;
   disallowEmptyCells?: boolean;
   outputProperty: string;
-  transformers?: Transformer[];
   validators?: Validator[];
 }
 
@@ -108,7 +109,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
       const {
         disallowEmptyCells: disallowEmptyCellsInColumn = false,
         outputProperty,
-        transformers = [],
+        cellTransformers = [],
       } = sheetStructure.columns[columnLetter];
 
       const initialValue = row[columnLetter];
@@ -135,7 +136,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
       } else {
         finalValue = doTransforms(initialValue, [
           ...cellPretransformers,
-          ...transformers,
+          ...cellTransformers,
         ]);
       }
       rowAsObj[outputProperty] = finalValue;
