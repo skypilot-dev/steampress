@@ -36,4 +36,25 @@ describe('formatAsTypeScript()', () => {
 
     expect(typeScriptText).toContain(`${imports[0]}\n${imports[1]}\n\n`);
   });
+
+  it('can name the export', () => {
+    const data = { data: { nestedNumber: 1, nestedStr: 'nested' } };
+    const options = {
+      exportName: 'myVarName',
+    };
+
+    const typeScriptText = formatAsTypeScript(data, options);
+    expect(typeScriptText).toContain(`export const myVarName = {`);
+  });
+
+  it('can name and declare the type of the export', () => {
+    const data = [ { num: 1, str: 'nested' } ];
+    const options = {
+      declaredType: 'SomeType[]',
+      exportName: 'myVarName',
+    };
+
+    const typeScriptText = formatAsTypeScript(data, options);
+    expect(typeScriptText).toContain(`export const myVarName: SomeType[] = [`);
+  });
 });
