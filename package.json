@@ -27,10 +27,10 @@
   "author": "William Thorsen",
   "license": "ISC",
   "devDependencies": {
-    "@skypilot/toolchain": "^0.4.16-alpha"
+    "@skypilot/toolchain": "^0.4.17-alpha"
   },
   "dependencies": {
-    "@skypilot/sugarbowl": "^0.10.3",
+    "@skypilot/sugarbowl": "^0.10.9",
     "convert-excel-to-json": "^1.6.1"
   },
   "files": [
