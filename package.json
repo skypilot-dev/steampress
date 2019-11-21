@@ -24,7 +24,10 @@
     "spreadsheet",
     "transform"
   ],
-  "author": "William Thorsen",
+  "author": {
+    "name": "William Thorsen",
+    "email": "wthorsen@skypilot.dev"
+  },
   "license": "ISC",
   "devDependencies": {
     "@skypilot/toolchain": "^0.4.17-alpha"
