@@ -3,7 +3,7 @@ import { isValidDate } from '@skypilot/sugarbowl';
 
 import { removeExtraWhitespace } from '../transformers';
 
-import { ExcelRow, ExcelSheet } from './types';
+import { ExcelRow, ExcelSheet, Transformer, Validator } from './types';
 
 
 /* -- Typings -- */
@@ -31,10 +31,6 @@ export interface ParseExcelSheetOptions {
 }
 
 type ObjectArrayTransformer = (value: object[]) => object[];
-
-type Transformer = (value: any) => any;
-
-type Validator = (value: any) => boolean;
 
 
 /* -- Helper functions -- */
