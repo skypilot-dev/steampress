@@ -4,7 +4,8 @@ import { formatAsTypeScript, TypeScriptFormatterOptions } from '../exporters/for
 import { writeTextToFile } from '../filesystem/writeTextToFile';
 
 import { excelSheetToJson } from './excelSheetToJson';
-import { parseExcelSheet, ParseExcelSheetOptions } from './parseExcelSheet';
+import { parseExcelSheet } from './parseExcelSheet';
+import { ParseExcelSheetOptions } from './types';
 
 
 /* -- Typings -- */
