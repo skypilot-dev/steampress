@@ -5,7 +5,7 @@ import { writeTextToFile } from '../filesystem/writeTextToFile';
 
 import { excelSheetToJson } from './excelSheetToJson';
 import { parseExcelSheet } from './parseExcelSheet';
-import { ParseExcelSheetOptions } from './types';
+import { ParseSheetOptions } from './types';
 
 
 /* -- Typings -- */
@@ -18,7 +18,7 @@ export interface ConvertExcelSheetToJsonOptions {
   outFile?: string;
   outFormat?: 'json' | 'typescript';
   formatterOptions?: TypeScriptFormatterOptions | {};
-  parserOptions: ParseExcelSheetOptions;
+  parserOptions: ParseSheetOptions;
 }
 
 

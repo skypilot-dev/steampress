@@ -1,5 +1,5 @@
 import { parseExcelSheet } from '../parseExcelSheet';
-import { ParseExcelSheetOptions } from '../types';
+import { ParseSheetOptions } from '../types';
 
 
 const fakeExcelSheetWithHeaderRow = [
@@ -17,7 +17,7 @@ const fakeExcelSheetWithHeaderRow = [
   },
 ];
 
-const options: ParseExcelSheetOptions = {
+const options: ParseSheetOptions = {
   columns: {
     A: {
       expectedHeader: 'Key',
