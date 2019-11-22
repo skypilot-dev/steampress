@@ -1,5 +1,6 @@
 /* -- Imports -- */
 import { isValidDate } from '@skypilot/sugarbowl';
+import { JsonObject } from '@skypilot/common-types';
 
 import { removeExtraWhitespace } from '../transformers';
 
@@ -50,7 +51,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
   }
 
   // Each row is an object having the property names defined in `Column`
-  const table = [];
+  const table: JsonObject[] = [];
 
   const desiredColumnLetters = Object.keys(sheetStructure.columns);
   for (let i = startingRowIndex; i < rows.length; i += 1) {
@@ -58,7 +59,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
     const row = rows[i];
 
     // Initialize the object
-    const rowAsObj: { [key: string]: any } = {};
+    const rowAsObj: JsonObject = {};
 
 
     /* TODO: Refactor exclusion of empty cells */
