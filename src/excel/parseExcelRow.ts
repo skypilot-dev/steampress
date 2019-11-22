@@ -15,7 +15,7 @@ import { ExcelRow, ParseRowOptions } from './types';
 export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonObject | null {
   const {
     columns,
-    disallowEmptyCellsInRow: disallowEmptyCellsInRow = false,
+    disallowEmptyCellsInRow,
     globalCellTransformers = [],
     rowIndex,
     rowTransformers = [],
@@ -35,7 +35,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
   desiredColumnLetters.forEach((columnLetter: string) => {
 
     const {
-      disallowEmptyCells: disallowEmptyCellsInColumn = false,
+      disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
       outputProperty,
       cellTransformers = [],
     } = columns[columnLetter];
@@ -50,8 +50,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
 
     let finalValue;
     if (typeof initialValue === 'undefined') {
-      if (disallowEmptyCellsInRow || disallowEmptyCellsInColumn) {
-        /* Cell is empty, so don't add it to the table */
+      if (disallowEmptyCellsInColumn) {
         /* TODO: Add option to allow or disallow exclusions */
         if (verbose) {
           console.log(`WARNING: Row ${rowIndex + 1} contains no value for '${outputProperty}'`);

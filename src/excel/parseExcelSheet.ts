@@ -31,7 +31,7 @@ export function confirmHeaders(row: ExcelRow, sheetOptions: ParseSheetOptions): 
 export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOptions): object[] {
   const {
     columns,
-    disallowEmptyCells: disallowEmptyCellsInRow = false,
+    disallowEmptyCellsInSheet = false,
     globalCellTransformers = [],
     hasHeader = false,
     rowTransformers = [],
@@ -59,7 +59,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
 
     const rowAsObj: JsonObject | null = parseExcelRow(row, {
       columns,
-      disallowEmptyCellsInRow,
+      disallowEmptyCellsInRow: disallowEmptyCellsInSheet,
       globalCellTransformers,
       rowIndex: i,
       rowTransformers,

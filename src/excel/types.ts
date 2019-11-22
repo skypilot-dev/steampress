@@ -18,8 +18,8 @@ export type Validator = (value: any) => boolean;
 
 export interface ParseColumnOptions {
   cellTransformers?: Transformer[];
+  disallowEmptyCellsInColumn?: boolean;
   expectedHeader?: string;
-  disallowEmptyCells?: boolean;
   outputProperty: string;
   validators?: Validator[];
 }
@@ -39,7 +39,9 @@ export interface ParseSheetOptions {
   columns: {
     [columnLetter: string]:  ParseColumnOptions;
   };
-  disallowEmptyCells?: boolean;
+  /* `disallowEmptyCellsInSheet=true` is equivalent to setting `disallowEmptyCellsInColumn=true`
+   * in all columns. The latter, if set, overrides the former. */
+  disallowEmptyCellsInSheet?: boolean;
   globalCellTransformers?: Transformer[];
   hasHeader?: boolean;
   rowTransformers?: Transformer[];
