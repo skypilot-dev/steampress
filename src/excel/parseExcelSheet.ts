@@ -4,12 +4,12 @@ import { isValidDate } from '@skypilot/sugarbowl';
 import { removeExtraWhitespace } from '../transformers';
 
 import { transform } from './transform';
-import { ExcelRow, ExcelSheet, ParseExcelSheetOptions  } from './types';
+import { ExcelRow, ExcelSheet, ParseSheetOptions  } from './types';
 
 
 /* -- Helper functions -- */
 // Confirm that headers contain the expected values.
-export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOptions): boolean {
+export function confirmHeaders(row: ExcelRow, sheetStructure: ParseSheetOptions): boolean {
   const entries = Object.entries(row);
   for (let i = 0; i < entries.length; i += 1) {
     const [letter, value] = entries[i];
@@ -28,7 +28,7 @@ export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOpt
 }
 
 /* -- Main function -- */
-export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelSheetOptions): object[] {
+export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOptions): object[] {
   const {
     disallowEmptyCells: disallowEmptyCellsInRow = false,
     hasHeader = false,

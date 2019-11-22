@@ -20,7 +20,7 @@ export interface ParseColumnOptions {
   validators?: Validator[];
 }
 
-export interface ParseExcelSheetOptions {
+export interface ParseSheetOptions {
   columns: {
     [columnLetter: string]:  ParseColumnOptions;
   };
