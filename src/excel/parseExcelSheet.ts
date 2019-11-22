@@ -57,7 +57,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
 
     const row = rows[i];
 
-    const rowAsObj: JsonObject = parseExcelRow(row, {
+    const rowAsObj: JsonObject | null = parseExcelRow(row, {
       columns,
       disallowEmptyCellsInRow,
       globalCellTransformers,

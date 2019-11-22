@@ -10,8 +10,9 @@ import { ExcelRow, ParseRowOptions } from './types';
 
 /* -- Main function -- */
 /* Given an object containing the data from a spreadsheet row, transform the data in each desired
- * cell and return an object containing the transformed data. */
-export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonObject {
+ * cell and return a) an object containing the transformed data or b) null if the row cannot
+ * be parsed. */
+export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonObject | null {
   const {
     columns,
     disallowEmptyCellsInRow: disallowEmptyCellsInRow = false,
@@ -72,7 +73,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     if (verbose) {
       console.log(`Row ${rowIndex + 1} has been excluded because it is missing required values`);
     }
-    return {};
+    return null;
   } else {
     return transform(transformedRow, rowTransformers);
   }
