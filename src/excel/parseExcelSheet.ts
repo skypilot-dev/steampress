@@ -23,7 +23,7 @@ export interface ParseExcelSheetOptions {
   disallowEmptyCells?: boolean;
   hasHeader?: boolean;
   /* TODO: Possibly add `cellPosttransformers` */
-  cellPretransformers?: Transformer[];
+  globalCellTransformers?: Transformer[];
   rowTransformers?: Transformer[];
   /* TODO: Possibly rename to indicate that these transformers apply to the entire sheet */
   transformers?: ObjectArrayTransformer[];
@@ -71,7 +71,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
   const {
     disallowEmptyCells: disallowEmptyCellsInRow = false,
     hasHeader = false,
-    cellPretransformers = [],
+    globalCellTransformers = [],
     rowTransformers = [],
     transformers = [],
     verbose = false,
@@ -135,7 +135,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
         }
       } else {
         finalValue = doTransforms(initialValue, [
-          ...cellPretransformers,
+          ...globalCellTransformers,
           ...cellTransformers,
         ]);
       }
