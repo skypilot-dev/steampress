@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* -- Imports -- */
-import { JsonObject } from '@skypilot/common-types';
+import { Integer, JsonObject } from '@skypilot/common-types';
 
 
 /* -- Typings -- */
@@ -24,6 +24,17 @@ export interface ParseColumnOptions {
   validators?: Validator[];
 }
 
+export interface ParseRowOptions {
+  columns: {
+    [columnLetter: string]:  ParseColumnOptions;
+  };
+  disallowEmptyCellsInRow?: boolean;
+  globalCellTransformers?: Transformer[];
+  rowIndex: Integer;
+  rowTransformers?: Transformer[];
+  verbose?: boolean;
+}
+
 export interface ParseSheetOptions {
   columns: {
     [columnLetter: string]:  ParseColumnOptions;
@@ -32,7 +43,6 @@ export interface ParseSheetOptions {
   globalCellTransformers?: Transformer[];
   hasHeader?: boolean;
   rowTransformers?: Transformer[];
-  /* TODO: Possibly rename to indicate that these transformers apply to the entire sheet */
   transformers?: ObjectArrayTransformer[];
   verbose?: boolean;
 }
