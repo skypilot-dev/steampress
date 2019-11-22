@@ -32,8 +32,8 @@ export function confirmHeaders(row: ExcelRow, sheetOptions: ParseSheetOptions): 
 export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOptions): object[] {
   const {
     disallowEmptyCells: disallowEmptyCellsInRow = false,
-    hasHeader = false,
     globalCellTransformers = [],
+    hasHeader = false,
     rowTransformers = [],
     transformers = [],
     verbose = false,
