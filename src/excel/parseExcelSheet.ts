@@ -9,11 +9,11 @@ import { ExcelRow, ExcelSheet, ParseSheetOptions  } from './types';
 
 /* -- Helper functions -- */
 // Confirm that headers contain the expected values.
-export function confirmHeaders(row: ExcelRow, sheetStructure: ParseSheetOptions): boolean {
+export function confirmHeaders(row: ExcelRow, sheetOptions: ParseSheetOptions): boolean {
   const entries = Object.entries(row);
   for (let i = 0; i < entries.length; i += 1) {
     const [letter, value] = entries[i];
-    const columnStructure = sheetStructure.columns[letter];
+    const columnStructure = sheetOptions.columns[letter];
 
     if (columnStructure && columnStructure.expectedHeader) {
       const expectedHeader = columnStructure.expectedHeader;
