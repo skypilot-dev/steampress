@@ -3,6 +3,7 @@ import { isValidDate } from '@skypilot/sugarbowl';
 
 import { removeExtraWhitespace } from '../transformers';
 
+import { transform } from './transform';
 import { ExcelRow, ExcelSheet, Transformer, Validator } from './types';
 
 
@@ -52,15 +53,6 @@ export function confirmHeaders(row: ExcelRow, sheetStructure: ParseExcelSheetOpt
   }
   return true;
 }
-
-function doTransforms(initialValue: any, transformers: Transformer[]): any {
-  let transformedValue = initialValue;
-  transformers.forEach((transformer) => {
-    transformedValue = transformer(transformedValue);
-  });
-  return transformedValue;
-}
-
 
 /* -- Main function -- */
 export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelSheetOptions): object[] {
@@ -130,7 +122,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
           finalValue = null;
         }
       } else {
-        finalValue = doTransforms(initialValue, [
+        finalValue = transform(initialValue, [
           ...globalCellTransformers,
           ...cellTransformers,
         ]);
@@ -143,7 +135,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseExcelShee
         console.log(`Row ${i} has been excluded because it is missing required values`);
       }
     } else {
-      const finalRowObj = doTransforms(rowAsObj, rowTransformers);
+      const finalRowObj = transform(rowAsObj, rowTransformers);
       table.push(finalRowObj);
     }
   }
