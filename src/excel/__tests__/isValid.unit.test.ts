@@ -1,4 +1,4 @@
-import { isValid } from '../isValid';
+import { IsValidOptions, isValid } from '../isValid';
 import { Validator } from '../types';
 
 describe('isValid(:validators, :options)', () => {
@@ -60,6 +60,47 @@ describe('isValid(:validators, :options)', () => {
       const cellValue = '1234';
       const valueIsValid = isValid(cellValue, { validators: [isTruthy, isShort, isNumber] });
       expect(valueIsValid).toBe(false);
+    });
+  });
+
+  describe('options.dataType', () => {
+    it('if dataType is set and the value is of that type, should return true', () => {
+      const value = 1;
+      const options: IsValidOptions = {
+        allowUndefined: false,
+        dataType: 'number',
+      };
+      const valueIsValid = isValid(value, options);
+      expect(valueIsValid).toBe(true);
+    });
+
+    it('if dataType is set and the value is not of that type, should return false', () => {
+      const value = 'text';
+      const options: IsValidOptions = {
+        allowUndefined: false,
+        dataType: 'number',
+      };
+      const valueIsValid = isValid(value, options);
+      expect(valueIsValid).toBe(false);
+    });
+
+    it('if dataType is not set but the value is not one of the permitted types, should return false', () => {
+      const value: [] = [];
+      const options: IsValidOptions = {
+        allowUndefined: false,
+      };
+      const valueIsValid = isValid(value, options);
+      expect(valueIsValid).toBe(false);
+    });
+
+    it("if dataType is set to 'date' and the value is a date, should return true", () => {
+      const value = new Date();
+      const options: IsValidOptions = {
+        allowUndefined: false,
+        dataType: 'date',
+      };
+      const valueIsValid = isValid(value, options);
+      expect(valueIsValid).toBe(true);
     });
   });
 });
