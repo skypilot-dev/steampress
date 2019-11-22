@@ -35,7 +35,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
     globalCellTransformers = [],
     hasHeader = false,
     rowTransformers = [],
-    transformers = [],
+    sheetTransformers = [],
     verbose = false,
   } = sheetStructure;
 
@@ -71,7 +71,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
   }
 
   let transformedTable = table;
-  transformers.forEach((transformFn) => {
+  sheetTransformers.forEach((transformFn) => {
     transformedTable = transformFn(transformedTable);
   });
   return transformedTable;

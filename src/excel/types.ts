@@ -43,7 +43,7 @@ export interface ParseSheetOptions {
   globalCellTransformers?: Transformer[];
   hasHeader?: boolean;
   rowTransformers?: Transformer[];
-  transformers?: ObjectArrayTransformer[];
+  sheetTransformers?: ObjectArrayTransformer[];
   verbose?: boolean;
 }
 
