@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type ExcelSheet = ExcelRow[];
 
 export interface ExcelRow {
