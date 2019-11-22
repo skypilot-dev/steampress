@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { JsonObject } from '@skypilot/common-types';
+
+
 export type ExcelSheet = ExcelRow[];
 
 export interface ExcelRow {
   [columnLetter: string]: any;
 }
 
-type ObjectArrayTransformer = (value: object[]) => object[];
+type ObjectArrayTransformer = (value: JsonObject[]) => JsonObject[];
 
 export type Transformer = (value: any) => any;
 
