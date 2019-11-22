@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* -- Imports -- */
 import { JsonObject } from '@skypilot/common-types';
 
 
+/* -- Typings -- */
 export type ExcelSheet = ExcelRow[];
 
 export interface ExcelRow {
@@ -16,7 +18,6 @@ export type Validator = (value: any) => boolean;
 
 export interface ParseColumnOptions {
   cellTransformers?: Transformer[];
-  /* TODO: If the need arises, add a `columnTransformers` property. */
   expectedHeader?: string;
   disallowEmptyCells?: boolean;
   outputProperty: string;
@@ -28,9 +29,8 @@ export interface ParseSheetOptions {
     [columnLetter: string]:  ParseColumnOptions;
   };
   disallowEmptyCells?: boolean;
-  hasHeader?: boolean;
-  /* TODO: Possibly add `cellPosttransformers` */
   globalCellTransformers?: Transformer[];
+  hasHeader?: boolean;
   rowTransformers?: Transformer[];
   /* TODO: Possibly rename to indicate that these transformers apply to the entire sheet */
   transformers?: ObjectArrayTransformer[];
