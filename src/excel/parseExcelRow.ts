@@ -1,9 +1,9 @@
 /* eslint-disable no-console, @typescript-eslint/no-explicit-any */
 
 /* -- Imports -- */
-import { JsonObject } from '@skypilot/common-types';
-import { isValidDate } from '@skypilot/sugarbowl';
+import { JsonObject, Literal } from '@skypilot/common-types';
 
+import { isValid } from './isValid';
 import { transform } from './transform';
 import { ExcelRow, ParseRowOptions } from './types';
 
@@ -22,11 +22,9 @@ function cellIsEmpty(value: any): boolean {
 export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonObject | null {
   const {
     columns,
-    disallowEmptyCellsInRow,
     globalCellTransformers = [],
     rowIndex = 0,
     rowTransformers = [],
-    verbose = false,
   } = rowOptions;
 
   /* The row object contains all columns, but only those named in `columns` are of interest. */
@@ -39,13 +37,14 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
   for (let i = 0; i < desiredColumnLetters.length; i += 1) {
     const columnLetter: string = desiredColumnLetters[i];
     const {
-      disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
+      defaultValue,
       ignoreRowIfTruthy = false,
       outputProperty,
       cellTransformers = [],
     } = columns[columnLetter];
 
-    const initialValue = row[columnLetter];
+    const initialValue: Literal = row[columnLetter];
+    let transformedValue = initialValue;
 
     if (ignoreRowIfTruthy) {
       if (initialValue) {
@@ -54,36 +53,24 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     } else {
       /* Note that an empty value is OK if `ignoreRowIfTruthy`, because the value is discarded. */
       if (cellIsEmpty(initialValue)) {
-        /* TODO: Log an exception instead of throwing an error. */
-        throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}' and no default value has been set`);
-      }
-    }
-
-    if (!['number', 'string', 'undefined'].includes(typeof initialValue)) {
-      /* The only supported object type is Date */
-      if (!isValidDate(initialValue)) {
-        throw new Error(`Unrecognized type: ${typeof initialValue}`);
-      }
-    }
-
-    let finalValue;
-    if (typeof initialValue === 'undefined') {
-      if (disallowEmptyCellsInColumn) {
-        /* TODO: Add option to allow or disallow exclusions */
-        if (verbose) {
-          console.log(`WARNING: Row ${rowIndex + 1} has been excluded because it contains no value for '${outputProperty}'`);
+        if (defaultValue === undefined) {
+          /* TODO: Log an exception instead of throwing an error. */
+          throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}' and no default value has been set`);
+        } else {
+          transformedValue = defaultValue;
         }
-        return null;
       } else {
-        finalValue = null;
+        if (!isValid(initialValue, {})) {
+          throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
+        }
       }
-    } else {
-      finalValue = transform(initialValue, [
-        ...globalCellTransformers, ...cellTransformers,
-      ]);
     }
+
+    transformedValue = transform(transformedValue, [
+      ...globalCellTransformers, ...cellTransformers,
+    ]);
     if (!ignoreRowIfTruthy) {
-      transformedRow[outputProperty] = finalValue;
+      transformedRow[outputProperty] = transformedValue;
     }
   }
   return transform(transformedRow, rowTransformers);

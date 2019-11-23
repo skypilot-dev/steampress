@@ -39,8 +39,20 @@ describe('parseExcelRow()', () => {
   });
 
   describe('when a cell is empty', () => {
+    it('if `defaultValue` is set, the cell should get the default value', () => {
+      const rowOptions: ParseRowOptions = {
+        columns: {
+          a: { outputProperty: 'colA', defaultValue: 'default' },
+        },
+      };
+      const excelRow: ExcelRow = {
+        a: undefined,
+      };
+      const jsonRow = parseExcelRow(excelRow, rowOptions);
+      expect(jsonRow).toEqual({ colA: 'default' });
+    });
 
-    it('the row should be rejected as invalid', () => {
+    it('if `defaultValue` is not set, an error should be thrown', () => {
       const rowOptions: ParseRowOptions = {
         columns: {
           a: { outputProperty: 'colA' },

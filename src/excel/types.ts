@@ -18,6 +18,7 @@ export type Validator = (value: any) => boolean;
 
 export interface ParseColumnOptions {
   cellTransformers?: Transformer[];
+  defaultValue?: any;
   disallowEmptyCellsInColumn?: boolean;
   expectedHeader?: string;
   ignoreRowIfTruthy?: boolean; // provides a way to selectively ignore rows

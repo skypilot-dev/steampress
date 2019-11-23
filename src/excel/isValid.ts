@@ -42,7 +42,7 @@ function makeTypeValidator(dataType: CellDataType | 'any' = 'any'): Validator {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isValid(value: any, options: IsValidOptions): boolean {
   const {
-    allowUndefined = true,
+    allowUndefined = false,
     dataType = 'any',
     validators = [],
   } = options;
