@@ -22,6 +22,7 @@ function cellIsEmpty(value: any): boolean {
 export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonObject | null {
   const {
     columns,
+    disallowEmptyCellsInRow = false,
     globalCellTransformers = [],
     rowIndex = 0,
     rowTransformers = [],
@@ -38,13 +39,14 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     const columnLetter: string = desiredColumnLetters[i];
     const {
       defaultValue,
+      disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
       ignoreRowIfTruthy = false,
       outputProperty,
       cellTransformers = [],
     } = columns[columnLetter];
 
     const initialValue: Literal = row[columnLetter];
-    let transformedValue = initialValue;
+    let transformedValue: Literal | null = initialValue;
 
     if (ignoreRowIfTruthy) {
       if (initialValue) {
@@ -53,11 +55,14 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     } else {
       /* Note that an empty value is OK if `ignoreRowIfTruthy`, because the value is discarded. */
       if (cellIsEmpty(initialValue)) {
-        if (defaultValue === undefined) {
-          /* TODO: Log an exception instead of throwing an error. */
-          throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}' and no default value has been set`);
-        } else {
+        if (defaultValue !== undefined) {
           transformedValue = defaultValue;
+        } else {
+          if (!disallowEmptyCellsInColumn) {
+            transformedValue = null;
+          } else {
+            throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
+          }
         }
       } else {
         if (!isValid(initialValue, {})) {
