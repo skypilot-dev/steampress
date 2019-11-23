@@ -1,58 +1,29 @@
 import { parseExcelSheet } from '../parseExcelSheet';
-import { ParseSheetOptions } from '../types';
-
-
-const fakeExcelSheetWithHeaderRow = [
-  {
-    A: 'Key',
-    B: 'Value',
-    C: 'Notes',
-    D: 'Ignored',
-  },
-  {
-    A: 'some-key',
-    B: 'some-value',
-    C: 'a line of notes',
-    D: 'ignored',
-  },
-];
-
-const options: ParseSheetOptions = {
-  columns: {
-    A: {
-      expectedHeader: 'Key',
-      outputProperty: 'key',
-    },
-    B: {
-      expectedHeader: 'Value',
-      outputProperty: 'value',
-    },
-    C: {
-      expectedHeader: 'Notes',
-      outputProperty: 'notes',
-    },
-  },
-  hasHeader: true,
-};
+import { ExcelSheet, ParseSheetOptions } from '../types';
 
 
 describe('parseExcel()', () => {
-  const expectedObjects = [
-    {
-      key: 'some-key',
-      value: 'some-value',
-      notes: 'a line of notes',
-    },
+  const excelSheetWithHeaderRow: ExcelSheet = [
+    { A: 'Key', B: 'Value', C: 'Notes', D: 'Ignored' },
+    { A: 'some-key', B: 'some-value', C: 'a line of notes', D: 'ignored' },
   ];
 
+  const options: ParseSheetOptions = {
+    columns: {
+      A: { expectedHeader: 'Key', outputProperty: 'key' },
+      B: { expectedHeader: 'Value', outputProperty: 'value' },
+      C: { expectedHeader: 'Notes', outputProperty: 'notes' },
+    },
+    hasHeader: true,
+  };
 
   it('should transform the sheet into the expected structure', () => {
-    const parsedSheet = parseExcelSheet(fakeExcelSheetWithHeaderRow, options);
+    const expectedObjects = [
+      { key: 'some-key', value: 'some-value', notes: 'a line of notes' },
+    ];
+    const parsedSheet = parseExcelSheet(excelSheetWithHeaderRow, options);
     expect(parsedSheet).toEqual(expectedObjects);
   });
-
-  /* TODO: Add test of the `disallowEmptyCells` flags */
-
 
   it("should apply the sheet's globalCellTransformers, then the column's own transformers", () => {
     function hyphensToSpaces(str: string): string {
@@ -70,9 +41,7 @@ describe('parseExcel()', () => {
     }
 
     options.globalCellTransformers = [hyphensToSpaces];
-
     options.columns.A.cellTransformers = [uppercase];
-
     options.columns.C.cellTransformers = [removeFirstWord];
 
     const expectedTransformedObjects = [
@@ -83,7 +52,7 @@ describe('parseExcel()', () => {
       },
     ];
 
-    const parsedSheet = parseExcelSheet(fakeExcelSheetWithHeaderRow, options);
+    const parsedSheet = parseExcelSheet(excelSheetWithHeaderRow, options);
     expect(parsedSheet).toEqual(expectedTransformedObjects);
   });
 });
