@@ -38,4 +38,36 @@ describe('parseExcelRow()', () => {
       });
     });
   });
+
+  describe('when a cell is empty', () => {
+
+    it('the row should be rejected as invalid', () => {
+      const rowOptions: ParseRowOptions = {
+        columns: {
+          a: { outputProperty: 'colA' },
+        },
+        rowIndex: 0,
+      };
+      const excelRow: ExcelRow = {
+        a: undefined,
+      };
+      expect(() => {
+        parseExcelRow(excelRow, rowOptions);
+      }).toThrow();
+    });
+
+    it('if the empty cell is in a `ignoreRowIfTruthy` column, the row should be not be rejected', () => {
+      const rowOptions: ParseRowOptions = {
+        columns: {
+          a: { ignoreRowIfTruthy: true, outputProperty: 'colA' },
+        },
+        rowIndex: 0,
+      };
+      const excelRow: ExcelRow = {
+        a: undefined,
+      };
+      const jsonRow = parseExcelRow(excelRow, rowOptions);
+      expect(jsonRow).toEqual({});
+    });
+  });
 });

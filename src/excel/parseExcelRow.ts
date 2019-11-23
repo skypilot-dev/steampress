@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, @typescript-eslint/no-explicit-any */
 
 /* -- Imports -- */
 import { JsonObject } from '@skypilot/common-types';
@@ -6,6 +6,13 @@ import { isValidDate } from '@skypilot/sugarbowl';
 
 import { transform } from './transform';
 import { ExcelRow, ParseRowOptions } from './types';
+
+
+/* -- Helper functions -- */
+function cellIsEmpty(value: any): boolean {
+  /* The Excel converter gives empty cells a value of `undefined`. */
+  return value === undefined;
+}
 
 
 /* -- Main function -- */
@@ -40,8 +47,16 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
 
     const initialValue = row[columnLetter];
 
-    if (ignoreRowIfTruthy && !!initialValue) {
-      return null;
+    if (ignoreRowIfTruthy) {
+      if (initialValue) {
+        return null;
+      }
+    } else {
+      /* Note that an empty value is OK if `ignoreRowIfTruthy`, because the value is discarded. */
+      if (cellIsEmpty(initialValue)) {
+        /* TODO: Log an exception instead of throwing an error. */
+        throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}' and no default value has been set`);
+      }
     }
 
     if (!['number', 'string', 'undefined'].includes(typeof initialValue)) {
