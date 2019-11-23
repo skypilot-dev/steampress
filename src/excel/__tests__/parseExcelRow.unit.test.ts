@@ -8,7 +8,6 @@ describe('parseExcelRow()', () => {
         a: { ignoreRowIfTruthy: true, outputProperty: 'colA' },
         b: { outputProperty: 'colB' },
       },
-      rowIndex: 0,
     };
 
     it('if a cell in that column has content, should skip the row', () => {
@@ -46,7 +45,6 @@ describe('parseExcelRow()', () => {
         columns: {
           a: { outputProperty: 'colA' },
         },
-        rowIndex: 0,
       };
       const excelRow: ExcelRow = {
         a: undefined,
@@ -61,7 +59,6 @@ describe('parseExcelRow()', () => {
         columns: {
           a: { ignoreRowIfTruthy: true, outputProperty: 'colA' },
         },
-        rowIndex: 0,
       };
       const excelRow: ExcelRow = {
         a: undefined,

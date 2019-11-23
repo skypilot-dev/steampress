@@ -31,7 +31,7 @@ export interface ParseRowOptions {
   };
   disallowEmptyCellsInRow?: boolean;
   globalCellTransformers?: Transformer[];
-  rowIndex: Integer;
+  rowIndex?: Integer;
   rowTransformers?: Transformer[];
   verbose?: boolean;
 }

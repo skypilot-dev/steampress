@@ -24,7 +24,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     columns,
     disallowEmptyCellsInRow,
     globalCellTransformers = [],
-    rowIndex,
+    rowIndex = 0,
     rowTransformers = [],
     verbose = false,
   } = rowOptions;
