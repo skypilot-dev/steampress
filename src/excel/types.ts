@@ -21,7 +21,8 @@ export interface ParseColumnOptions {
   defaultValue?: any;
   disallowEmptyCellsInColumn?: boolean;
   expectedHeader?: string;
-  ignoreRowIfTruthy?: boolean; // provides a way to selectively ignore rows
+  ignoreRowIfFalsy?: boolean; // provides a way to selectively ignore rows
+  ignoreRowIfTruthy?: boolean;
   outputProperty?: string;
   validators?: Validator[];
 }

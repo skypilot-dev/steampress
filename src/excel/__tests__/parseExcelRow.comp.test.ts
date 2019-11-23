@@ -2,6 +2,33 @@ import { parseExcelRow } from '../parseExcelRow';
 import { ExcelRow, ParseRowOptions } from '../types';
 
 describe('parseExcelRow()', () => {
+  describe('when `ignoreRowIfFalsy=true` for a column', () => {
+    const rowOptions: ParseRowOptions = {
+      columns: {
+        A: { ignoreRowIfFalsy: true },
+        B: {},
+      },
+    };
+
+    it('if a cell in that column has falsy content, should skip the row', () => {
+      const excelRow: ExcelRow = {
+        A: undefined,
+        B: 2,
+      };
+      const jsonRow = parseExcelRow(excelRow, rowOptions);
+      expect(jsonRow).toEqual(null);
+    });
+
+    it('if a cell in that column does not have falsy content, should not skip the row', () => {
+      const excelRow: ExcelRow = {
+        A: 1,
+        B: 2,
+      };
+      const jsonRow = parseExcelRow(excelRow, rowOptions);
+      expect(jsonRow).toEqual({ A: 1, B: 2 });
+    });
+  });
+
   describe('when `ignoreRowIfTruthy=true` for a column', () => {
     const rowOptions: ParseRowOptions = {
       columns: {

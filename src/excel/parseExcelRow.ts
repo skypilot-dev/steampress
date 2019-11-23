@@ -40,6 +40,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     const {
       defaultValue,
       disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
+      ignoreRowIfFalsy = false,
       ignoreRowIfTruthy = false,
       outputProperty = columnLetter,
       cellTransformers = [],
@@ -50,6 +51,10 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
 
     if (ignoreRowIfTruthy) {
       if (initialValue) {
+        return null;
+      }
+    } else if (ignoreRowIfFalsy) {
+      if (!initialValue) {
         return null;
       }
     } else {
