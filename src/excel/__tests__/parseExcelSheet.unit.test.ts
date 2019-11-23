@@ -2,6 +2,56 @@ import { parseExcelSheet } from '../parseExcelSheet';
 import { ExcelSheet, ParseSheetOptions } from '../types';
 
 
+describe('parseExcelSheet(:excelSheet, :options)', () => {
+  const excelSheet: ExcelSheet = [{
+    A: 1, B: 'string', C: undefined,
+  }];
+
+  it('should parse only the requested columns', () => {
+    const sheetOptions: ParseSheetOptions = {
+      columns: { A: {}, B: {} },
+    };
+    const parsedSheet = parseExcelSheet(excelSheet, sheetOptions);
+    expect(parsedSheet).toEqual([
+      { A: 1, B: 'string' },
+    ]);
+  });
+
+  it('when outputProperty is set, should use that value as the key in the output', () => {
+    const sheetOptions: ParseSheetOptions = {
+      columns: {
+        A: { outputProperty: 'colA' },
+        B: { outputProperty: 'colB' },
+      },
+    };
+    const parsedSheet = parseExcelSheet(excelSheet, sheetOptions);
+    expect(parsedSheet).toEqual([
+      { colA: 1, colB: 'string' },
+    ]);
+  });
+
+  it('when empty cells are allowed, should give empty cells a null value', () => {
+    const sheetOptions: ParseSheetOptions = {
+      columns: { A: {}, B: {}, C: {} },
+      disallowEmptyCellsInSheet: false,
+    };
+    const parsedSheet = parseExcelSheet(excelSheet, sheetOptions);
+    expect(parsedSheet).toEqual([
+      { A: 1, B: 'string', C: null },
+    ]);
+  });
+
+  it('when disallowEmptyCellsInSheet=true, should throw an error when a cell is empty', () => {
+    const sheetOptions: ParseSheetOptions = {
+      columns: { A: {}, B: {}, C: {} },
+      disallowEmptyCellsInSheet: true,
+    };
+    expect(() => {
+      parseExcelSheet(excelSheet, sheetOptions);
+    }).toThrow();
+  });
+});
+
 describe('parseExcel()', () => {
   const excelSheetWithHeaderRow: ExcelSheet = [
     { A: 'Key', B: 'Value', C: 'Notes', D: 'Ignored' },

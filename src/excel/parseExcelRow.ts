@@ -41,7 +41,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       defaultValue,
       disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
       ignoreRowIfTruthy = false,
-      outputProperty,
+      outputProperty = columnLetter,
       cellTransformers = [],
     } = columns[columnLetter];
 
