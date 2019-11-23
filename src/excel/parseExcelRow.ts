@@ -28,19 +28,22 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
   /* Initialize the object that will store the transformed row. */
   const transformedRow: JsonObject = {};
 
-  /* TODO: Refactor exclusion of empty cells */
-  let containsDisallowedEmptyCells = false;
-
   // Copy each desired column value to the corresponding `outputProperty` field on the new object
-  desiredColumnLetters.forEach((columnLetter: string) => {
-
+  for (let i = 0; i < desiredColumnLetters.length; i += 1) {
+    const columnLetter: string = desiredColumnLetters[i];
     const {
       disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
+      ignoreRowIfTruthy = false,
       outputProperty,
       cellTransformers = [],
     } = columns[columnLetter];
 
     const initialValue = row[columnLetter];
+
+    if (ignoreRowIfTruthy && !!initialValue) {
+      return null;
+    }
+
     if (!['number', 'string', 'undefined'].includes(typeof initialValue)) {
       /* The only supported object type is Date */
       if (!isValidDate(initialValue)) {
@@ -53,10 +56,9 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       if (disallowEmptyCellsInColumn) {
         /* TODO: Add option to allow or disallow exclusions */
         if (verbose) {
-          console.log(`WARNING: Row ${rowIndex + 1} contains no value for '${outputProperty}'`);
+          console.log(`WARNING: Row ${rowIndex + 1} has been excluded because it contains no value for '${outputProperty}'`);
         }
-        containsDisallowedEmptyCells = true;
-        return;
+        return null;
       } else {
         finalValue = null;
       }
@@ -65,15 +67,9 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
         ...globalCellTransformers, ...cellTransformers,
       ]);
     }
-    transformedRow[outputProperty] = finalValue;
-  });
-
-  if (containsDisallowedEmptyCells) {
-    if (verbose) {
-      console.log(`Row ${rowIndex + 1} has been excluded because it is missing required values`);
+    if (!ignoreRowIfTruthy) {
+      transformedRow[outputProperty] = finalValue;
     }
-    return null;
-  } else {
-    return transform(transformedRow, rowTransformers);
   }
+  return transform(transformedRow, rowTransformers);
 }

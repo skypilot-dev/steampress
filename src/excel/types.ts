@@ -20,6 +20,7 @@ export interface ParseColumnOptions {
   cellTransformers?: Transformer[];
   disallowEmptyCellsInColumn?: boolean;
   expectedHeader?: string;
+  ignoreRowIfTruthy?: boolean; // provides a way to selectively ignore rows
   outputProperty: string;
   validators?: Validator[];
 }
