@@ -66,17 +66,21 @@ describe('parseExcelRow()', () => {
   });
 
   describe('when a cell is empty', () => {
-    it('if `defaultValue` is set, the cell should get the default value', () => {
+    it('if `defaultValue` is set, the cell should get the default value without transformations', () => {
+      const toUpperCase = (str: string): string => str.toUpperCase();
       const rowOptions: ParseRowOptions = {
         columns: {
-          a: { outputProperty: 'colA', defaultValue: 'default' },
+          A: { cellTransformers: [toUpperCase], defaultValue: 'transforms are not applied' },
+          B: { cellTransformers: [toUpperCase] },
         },
       };
       const excelRow: ExcelRow = {
-        a: undefined,
+        A: undefined,
+        B: 'transforms are applied',
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({ colA: 'default' });
+      /* Note that the `cellTransformers` are skipped. */
+      expect(jsonRow).toEqual({ A: 'transforms are not applied', B: 'TRANSFORMS ARE APPLIED' });
     });
 
     it('if `defaultValue` is not set and empty cells are disallowed an error should be thrown', () => {

@@ -49,36 +49,39 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     const initialValue: Literal = row[columnLetter];
     let transformedValue: Literal | null = initialValue;
 
-    if (ignoreRowIfTruthy) {
-      if (initialValue) {
-        return null;
-      }
-    } else if (ignoreRowIfFalsy) {
-      if (!initialValue) {
-        return null;
-      }
+    if (cellIsEmpty(initialValue) && defaultValue !== undefined) {
+      transformedValue = defaultValue;
     } else {
-      /* Note that an empty value is OK if `ignoreRowIfTruthy`, because the value is discarded. */
-      if (cellIsEmpty(initialValue)) {
-        if (defaultValue !== undefined) {
-          transformedValue = defaultValue;
-        } else {
-          if (!disallowEmptyCellsInColumn) {
-            transformedValue = null;
-          } else {
-            throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
-          }
+      if (ignoreRowIfTruthy) {
+        if (initialValue) {
+          return null;
+        }
+      } else if (ignoreRowIfFalsy) {
+        if (!initialValue) {
+          return null;
         }
       } else {
-        if (!isValid(initialValue, {})) {
-          throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
+        /* Note that an empty value is OK if `ignoreRowIfTruthy`, because the value is discarded. */
+        if (cellIsEmpty(initialValue)) {
+          if (defaultValue !== undefined) {
+            transformedValue = defaultValue;
+          } else {
+            if (!disallowEmptyCellsInColumn) {
+              transformedValue = null;
+            } else {
+              throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
+            }
+          }
+        } else {
+          if (!isValid(initialValue, {})) {
+            throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
+          }
         }
       }
+      transformedValue = transform(transformedValue, [
+        ...globalCellTransformers, ...cellTransformers,
+      ]);
     }
-
-    transformedValue = transform(transformedValue, [
-      ...globalCellTransformers, ...cellTransformers,
-    ]);
     if (!ignoreRowIfTruthy) {
       transformedRow[outputProperty] = transformedValue;
     }
