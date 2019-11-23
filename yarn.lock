@@ -945,15 +945,15 @@
   resolved "https://registry.yarnpkg.com/@skypilot/common-types/-/common-types-0.1.2.tgz#dae83c8b494263d145de2b47dada20fc65b63cb6"
   integrity sha512-xK9e5corISizX6aOU4oouElQWyMmi/gr+K9H/9IfvNxeeyhfqsr7MVk/TYTIfkPz7XGy16JfNRO11Mr4O49edg==
 
-"@skypilot/sugarbowl@^0.10.9":
-  version "0.10.9"
-  resolved "https://registry.yarnpkg.com/@skypilot/sugarbowl/-/sugarbowl-0.10.9.tgz#cbb0bbb92cb0cd146ef082f77dd3acccd13c15ce"
-  integrity sha512-J654LCFQNkN/9n+KuGMpm6TmJQu8Zr+/yDQsESmn4b54UFAdrGhOCbY6K/2Fl879Mz+eyU3LsZhqmnEYtJaxNA==
+"@skypilot/sugarbowl@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@skypilot/sugarbowl/-/sugarbowl-0.11.0.tgz#72944905a467dc9d32b115264f8180062fd18d39"
+  integrity sha512-MlXxP9b0UTTXhpWhZ1KpPTmHNCAxdCVBLdT0YhQ88BOj/x3ga0pFtwrSsEWL6zdr6lyedEsJR9xZ6yoOyiA8VQ==
 
-"@skypilot/toolchain@^0.4.17-alpha":
-  version "0.4.17-alpha"
-  resolved "https://registry.yarnpkg.com/@skypilot/toolchain/-/toolchain-0.4.17-alpha.tgz#cf5263ba0069fd2d249ab97a60af56e37223d173"
-  integrity sha512-KNa4OxR9H4h3K4Udy1mWHaG4aDymHF2h3oVKbpgH+Ej23jIxBi0z+tcNRNdbB4OMyjPieECy1MLGs5ANlhJPRw==
+"@skypilot/toolchain@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@skypilot/toolchain/-/toolchain-1.0.0.tgz#54f759a92cad07439f1c01f07f450656e6c21401"
+  integrity sha512-1YX4djbnnme7EtwOkmHDiswtqhWRaocngFvVyQN9/p6jEqBJ/kQjQa2ysNFUU7fDbq2KSihQUAKaqq0F+pc2zw==
   dependencies:
     "@babel/cli" "^7.7.0"
     "@babel/core" "^7.7.2"
