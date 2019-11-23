@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { curry } from '@skypilot/sugarbowl';
+
+
+type KeyValuePair = { key: string; value: any }
+
+
 /* Add the key:value pair to the object and return it. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function addProperty(
-  { key, value }: { key: string; value: any },
+export function doAddProperty(
+  { key, value }: KeyValuePair,
   obj: { [key: string]: any },
 ): { [key: string]: any } {
   /* If overwrites are desired, create a new function named `setProperty` and use that. */
@@ -11,3 +17,5 @@ export function addProperty(
   obj[key] = value;
   return obj;
 }
+
+export const addProperty = curry(doAddProperty);
