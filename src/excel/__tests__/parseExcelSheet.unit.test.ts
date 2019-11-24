@@ -1,4 +1,5 @@
-import { parseExcelSheet, ParseExcelSheetOptions } from '../parseExcelSheet';
+import { parseExcelSheet } from '../parseExcelSheet';
+import { ParseSheetOptions } from '../types';
 
 
 const fakeExcelSheetWithHeaderRow = [
@@ -16,7 +17,7 @@ const fakeExcelSheetWithHeaderRow = [
   },
 ];
 
-const options: ParseExcelSheetOptions = {
+const options: ParseSheetOptions = {
   columns: {
     A: {
       expectedHeader: 'Key',
@@ -53,7 +54,7 @@ describe('parseExcel()', () => {
   /* TODO: Add test of the `disallowEmptyCells` flags */
 
 
-  it(`should apply the sheet's cellPretransformers, then the column's own transformers`, () => {
+  it("should apply the sheet's globalCellTransformers, then the column's own transformers", () => {
     function hyphensToSpaces(str: string): string {
       return str.replace('-', ' ');
     }
@@ -68,11 +69,11 @@ describe('parseExcel()', () => {
       return str.toUpperCase();
     }
 
-    options.cellPretransformers = [hyphensToSpaces];
+    options.globalCellTransformers = [hyphensToSpaces];
 
-    options.columns.A.transformers = [uppercase];
+    options.columns.A.cellTransformers = [uppercase];
 
-    options.columns.C.transformers = [removeFirstWord];
+    options.columns.C.cellTransformers = [removeFirstWord];
 
     const expectedTransformedObjects = [
       {
