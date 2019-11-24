@@ -1,7 +1,81 @@
 import { parseExcelRow } from '../parseExcelRow';
-import { ExcelRow, ParseRowOptions } from '../types';
+import { CellDataType, ExcelRow, ParseRowOptions } from '../types';
+
+
+const dataTypes: CellDataType[] = [
+  'boolean', 'date', 'number', 'string',
+];
+const sampleValues = {
+  boolean: true,
+  date: new Date(),
+  number: 1,
+  string: 'string',
+};
 
 describe('parseExcelRow()', () => {
+  describe('when `dataType` is set for a column', () => {
+    it('if the cell has the correct type, should succeed', () => {
+      dataTypes.forEach((dataType: CellDataType) => {
+        const rowOptions: ParseRowOptions = {
+          columns: { A: { dataType } },
+        };
+        const value = sampleValues[dataType];
+        const excelRow: ExcelRow = { A: value };
+        const parsedRow = parseExcelRow(excelRow, rowOptions);
+        expect(parsedRow).toEqual({ A: value });
+      });
+    });
+
+    it('if a cell has the wrong type, should throw an error', () => {
+      dataTypes.forEach((dataType: CellDataType) => {
+        dataTypes
+          .filter((valueDataType) => valueDataType !== dataType)
+          .forEach((valueDataType) => {
+            const rowOptions: ParseRowOptions = {
+              columns: { A: { dataType } },
+            };
+            const value = sampleValues[valueDataType];
+            const excelRow: ExcelRow = { A: value };
+            expect(() => {
+              parseExcelRow(excelRow, rowOptions);
+            }).toThrow();
+          });
+      });
+      const rowOptions: ParseRowOptions = {
+        columns: { A: { dataType: 'number' } },
+      };
+      const excelRow: ExcelRow = { A: 'string' };
+      expect(() => {
+        parseExcelRow(excelRow, rowOptions);
+      }).toThrow();
+    });
+
+    it('if a cell is empty and empty cells are disallowed in the row, should throw an error', () => {
+      dataTypes.forEach((dataType: CellDataType) => {
+        const rowOptions: ParseRowOptions = {
+          columns: { A: { dataType } },
+          disallowEmptyCellsInRow: true,
+        };
+        const excelRow: ExcelRow = { A: undefined };
+        expect(() => {
+          parseExcelRow(excelRow, rowOptions);
+        }).toThrow();
+      });
+    });
+
+    it('if a cell is empty and empty cells are allowed in the row, should use a null value for that cell', () => {
+      dataTypes.forEach((dataType: CellDataType) => {
+        const rowOptions: ParseRowOptions = {
+          columns: { A: { dataType } },
+          disallowEmptyCellsInRow: false,
+        };
+        const excelRow: ExcelRow = { A: undefined };
+        const parsedRow = parseExcelRow(excelRow, rowOptions);
+        expect(parsedRow).toEqual({ A: null });
+      });
+    });
+  });
+
   describe('when `ignoreRowIfFalsy=true` for a column', () => {
     const rowOptions: ParseRowOptions = {
       columns: {

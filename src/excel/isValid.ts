@@ -3,12 +3,10 @@
 import { Literal } from '@skypilot/common-types';
 import { isValidDate } from '@skypilot/sugarbowl';
 
-import { Validator } from './types';
+import { CellDataType, Validator } from './types';
 
 
 /* -- Typings -- */
-type CellDataType = 'boolean' | 'date' | 'number' | 'string';
-
 export interface IsValidOptions {
   allowUndefined?: boolean;
   dataType?: CellDataType;

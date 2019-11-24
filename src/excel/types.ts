@@ -4,6 +4,8 @@ import { Integer, JsonObject } from '@skypilot/common-types';
 
 
 /* -- Typings -- */
+export type CellDataType = 'boolean' | 'date' | 'number' | 'string';
+
 export type ExcelSheet = ExcelRow[];
 
 export interface ExcelRow {
@@ -18,6 +20,7 @@ export type Validator = (value: any) => boolean;
 
 export interface ParseColumnOptions {
   cellTransformers?: Transformer[];
+  dataType?: CellDataType;
   defaultValue?: any;
   disallowEmptyCellsInColumn?: boolean;
   expectedHeader?: string;
