@@ -15,6 +15,10 @@ export interface IsValidOptions {
 }
 
 
+/* Constants */
+export const LITERAL_CELL_DATA_TYPES: Partial<CellDataType>[] = ['boolean', 'number', 'string'];
+export const CELL_DATA_TYPES: CellDataType[] = [...LITERAL_CELL_DATA_TYPES, 'date'];
+
 /* -- Helper functions -- */
 function isDefined(value: Literal | undefined): boolean {
   return typeof value !== 'undefined';
@@ -34,7 +38,7 @@ function makeTypeValidator(dataType: CellDataType | 'any' = 'any'): Validator {
     /* Regardless of whether a data type is specified, these are the only supported types:
      * boolean, number, string, and Date. */
     return (value: any): boolean =>
-      ['boolean', 'number', 'string', 'undefined'].includes(typeof value)
+      [...LITERAL_CELL_DATA_TYPES, 'undefined'].includes(typeof value)
       || isValidDate(value);
   }
   if (dataType === 'date') {

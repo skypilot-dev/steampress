@@ -1,17 +1,9 @@
+import { CELL_DATA_TYPES } from '../isValid';
 import { parseExcelRow } from '../parseExcelRow';
 import { CellDataType, ExcelRow, ParseRowOptions } from '../types';
 
 
-const dataTypes: CellDataType[] = [
-  'boolean', 'date', 'number', 'string',
-];
-const sampleValues = {
-  boolean: true,
-  date: new Date(2018, 0, 1),
-  number: 1,
-  string: 'allowed',
-};
-const samplePermittedValues = {
+const samplePermittedValueLists = {
   boolean: [true],
   date: [new Date(2018, 0, 1), new Date(2019, 0, 1)],
   number: [-1, 1],
@@ -23,15 +15,21 @@ const sampleNonpermittedValues = {
   number: 0,
   string: 'not allowed',
 };
+const samplePermittedValues = {
+  boolean: true,
+  date: new Date(2018, 0, 1),
+  number: 1,
+  string: 'allowed',
+};
 
 describe('parseExcelRow()', () => {
   describe('when `dataType` is set for a column', () => {
     it('if the cell has the correct type, should succeed', () => {
-      dataTypes.forEach((dataType: CellDataType) => {
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
         const rowOptions: ParseRowOptions = {
           columns: { A: { dataType } },
         };
-        const value = sampleValues[dataType];
+        const value = samplePermittedValues[dataType];
         const excelRow: ExcelRow = { A: value };
         const parsedRow = parseExcelRow(excelRow, rowOptions);
         expect(parsedRow).toEqual({ A: value });
@@ -39,14 +37,14 @@ describe('parseExcelRow()', () => {
     });
 
     it('if a cell has the wrong type, should throw an error', () => {
-      dataTypes.forEach((dataType: CellDataType) => {
-        dataTypes
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
+        CELL_DATA_TYPES
           .filter((valueDataType) => valueDataType !== dataType)
           .forEach((valueDataType) => {
             const rowOptions: ParseRowOptions = {
               columns: { A: { dataType } },
             };
-            const value = sampleValues[valueDataType];
+            const value = samplePermittedValues[valueDataType];
             const excelRow: ExcelRow = { A: value };
             expect(() => {
               parseExcelRow(excelRow, rowOptions);
@@ -63,7 +61,7 @@ describe('parseExcelRow()', () => {
     });
 
     it('if a cell is empty and empty cells are disallowed in the row, should throw an error', () => {
-      dataTypes.forEach((dataType: CellDataType) => {
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
         const rowOptions: ParseRowOptions = {
           columns: { A: { dataType } },
           disallowEmptyCellsInRow: true,
@@ -76,7 +74,7 @@ describe('parseExcelRow()', () => {
     });
 
     it('if a cell is empty and empty cells are allowed in the row, should use a null value for that cell', () => {
-      dataTypes.forEach((dataType: CellDataType) => {
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
         const rowOptions: ParseRowOptions = {
           columns: { A: { dataType } },
           disallowEmptyCellsInRow: false,
@@ -212,12 +210,12 @@ describe('parseExcelRow()', () => {
 
   describe('when `permittedValues` is set for a column', () => {
     it('if the cell has a permitted value, should succeed', () => {
-      dataTypes.forEach((dataType: CellDataType) => {
-        const permittedValues = samplePermittedValues[dataType];
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
+        const permittedValues = samplePermittedValueLists[dataType];
         const rowOptions: ParseRowOptions = {
           columns: { A: { dataType, permittedValues } },
         };
-        const value = sampleValues[dataType];
+        const value = samplePermittedValues[dataType];
         const excelRow: ExcelRow = { A: value };
         const parsedRow = parseExcelRow(excelRow, rowOptions);
         expect(parsedRow).toEqual({ A: value });
@@ -225,8 +223,8 @@ describe('parseExcelRow()', () => {
     });
 
     it('if the cell has a nonpermitted value, should throw an error', () => {
-      dataTypes.forEach((dataType: CellDataType) => {
-        const permittedValues = samplePermittedValues[dataType];
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
+        const permittedValues = samplePermittedValueLists[dataType];
         const rowOptions: ParseRowOptions = {
           columns: { A: { dataType, permittedValues } },
         };

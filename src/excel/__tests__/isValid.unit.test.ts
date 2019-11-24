@@ -1,5 +1,14 @@
-import { IsValidOptions, isValid } from '../isValid';
-import { Validator } from '../types';
+import { IsValidOptions, isValid, CELL_DATA_TYPES } from '../isValid';
+import { CellDataType, Validator } from '../types';
+
+
+const samplePermittedValues = {
+  boolean: true,
+  date: new Date(2018, 0, 1),
+  number: 1,
+  string: 'allowed',
+};
+
 
 describe('isValid(:validators, :options)', () => {
   describe('options.allowUndefined', () => {
@@ -65,42 +74,31 @@ describe('isValid(:validators, :options)', () => {
 
   describe('options.dataType', () => {
     it('if dataType is set and the value is of that type, should return true', () => {
-      const value = 1;
-      const options: IsValidOptions = {
-        allowUndefined: false,
-        dataType: 'number',
-      };
-      const valueIsValid = isValid(value, options);
-      expect(valueIsValid).toBe(true);
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
+        const value = samplePermittedValues[dataType];
+        const options: IsValidOptions = {
+          allowUndefined: false,
+          dataType,
+        };
+        const valueIsValid = isValid(value, options);
+        expect(valueIsValid).toBe(true);
+      });
     });
 
     it('if dataType is set and the value is not of that type, should return false', () => {
-      const value = 'text';
-      const options: IsValidOptions = {
-        allowUndefined: false,
-        dataType: 'number',
-      };
-      const valueIsValid = isValid(value, options);
-      expect(valueIsValid).toBe(false);
-    });
-
-    it('if dataType is not set but the value is not one of the permitted types, should return false', () => {
-      const value: [] = [];
-      const options: IsValidOptions = {
-        allowUndefined: false,
-      };
-      const valueIsValid = isValid(value, options);
-      expect(valueIsValid).toBe(false);
-    });
-
-    it("if dataType is set to 'date' and the value is a date, should return true", () => {
-      const value = new Date();
-      const options: IsValidOptions = {
-        allowUndefined: false,
-        dataType: 'date',
-      };
-      const valueIsValid = isValid(value, options);
-      expect(valueIsValid).toBe(true);
+      CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
+        CELL_DATA_TYPES
+          .filter((valueDataType) => valueDataType !== dataType)
+          .forEach((valueDataType) => {
+            const options: IsValidOptions = {
+              allowUndefined: false,
+              dataType,
+            };
+            const value = samplePermittedValues[valueDataType];
+            const valueIsValid = isValid(value, options);
+            expect(valueIsValid).toBe(false);
+          });
+      });
     });
   });
 });
