@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* -- Imports -- */
 import { Literal } from '@skypilot/common-types';
-import { isValidDate } from '@skypilot/sugarbowl';
+import { isInteger, isValidDate } from '@skypilot/sugarbowl';
 
 import { CellDataType, Validator } from './types';
 
 
 /* -- Typings -- */
+type SupertypeMap = { [key in CellDataType]: CellDataType[] };
+
 export interface IsValidOptions {
   allowUndefined?: boolean;
   dataType?: CellDataType;
@@ -17,7 +19,14 @@ export interface IsValidOptions {
 
 /* Constants */
 export const LITERAL_CELL_DATA_TYPES: Partial<CellDataType>[] = ['boolean', 'number', 'string'];
-export const CELL_DATA_TYPES: CellDataType[] = [...LITERAL_CELL_DATA_TYPES, 'date'];
+
+export const CELL_DATA_TYPES: CellDataType[] = [...LITERAL_CELL_DATA_TYPES, 'date', 'integer'];
+
+/* Use this map to indicate that one data type is a valid subset of another data type. */
+export const CELL_DATA_TYPE_SUPERTYPES: Partial<SupertypeMap> = {
+  integer: ['number'],
+};
+
 
 /* -- Helper functions -- */
 function isDefined(value: Literal | undefined): boolean {
@@ -39,11 +48,17 @@ function makeTypeValidator(dataType: CellDataType | 'any' = 'any'): Validator {
      * boolean, number, string, and Date. */
     return (value: any): boolean =>
       [...LITERAL_CELL_DATA_TYPES, 'undefined'].includes(typeof value)
+      || isInteger(value)
       || isValidDate(value);
   }
   if (dataType === 'date') {
     return (value: any): boolean => isValidDate(value);
   }
+
+  if (dataType === 'integer') {
+    return (value: any): boolean => isInteger(value);
+  }
+
   return (value: any): boolean => typeof value === dataType;
 }
 

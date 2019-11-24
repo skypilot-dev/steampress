@@ -1,4 +1,4 @@
-import { CELL_DATA_TYPES } from '../isValid';
+import { CELL_DATA_TYPE_SUPERTYPES, CELL_DATA_TYPES } from '../isValid';
 import { parseExcelRow } from '../parseExcelRow';
 import { CellDataType, ExcelRow, ParseRowOptions } from '../types';
 
@@ -6,19 +6,22 @@ import { CellDataType, ExcelRow, ParseRowOptions } from '../types';
 const samplePermittedValueLists = {
   boolean: [true],
   date: [new Date(2018, 0, 1), new Date(2019, 0, 1)],
-  number: [-1, 1],
+  integer: [-1, 1],
+  number: [-1.5, 1.5],
   string: ['allowed', 'also allowed'],
 };
 const sampleNonpermittedValues = {
   boolean: false,
   date: new Date(1918, 0, 1),
+  integer: 0.5,
   number: 0,
   string: 'not allowed',
 };
 const samplePermittedValues = {
   boolean: true,
   date: new Date(2018, 0, 1),
-  number: 1,
+  integer: -1,
+  number: 1.5,
   string: 'allowed',
 };
 
@@ -40,6 +43,10 @@ describe('parseExcelRow()', () => {
       CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
         CELL_DATA_TYPES
           .filter((valueDataType) => valueDataType !== dataType)
+          .filter((valueDataType) => {
+            const supertypes = CELL_DATA_TYPE_SUPERTYPES[valueDataType] || [];
+            return !supertypes.includes(dataType)
+          })
           .forEach((valueDataType) => {
             const rowOptions: ParseRowOptions = {
               columns: { A: { dataType } },

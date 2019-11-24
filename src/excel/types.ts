@@ -4,19 +4,21 @@ import { Integer, JsonObject } from '@skypilot/common-types';
 
 
 /* -- Typings -- */
-export type CellDataType = 'boolean' | 'date' | 'number' | 'string';
+export type CellDataType = LiteralCellDataType | 'date' | 'integer';
 
 export type ExcelSheet = ExcelRow[];
 
-export interface ExcelRow {
-  [columnLetter: string]: any;
-}
+export type LiteralCellDataType = 'boolean' | 'number' | 'string';
 
 type ObjectArrayTransformer = (value: JsonObject[]) => JsonObject[];
 
 export type Transformer = (value: any) => any;
 
 export type Validator = (value: any) => boolean;
+
+export interface ExcelRow {
+  [columnLetter: string]: any;
+}
 
 export interface ParseColumnOptions {
   cellTransformers?: Transformer[];

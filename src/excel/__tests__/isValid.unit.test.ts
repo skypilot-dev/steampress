@@ -1,11 +1,17 @@
-import { IsValidOptions, isValid, CELL_DATA_TYPES } from '../isValid';
+import {
+  CELL_DATA_TYPE_SUPERTYPES,
+  CELL_DATA_TYPES,
+  IsValidOptions,
+  isValid,
+} from '../isValid';
 import { CellDataType, Validator } from '../types';
 
 
 const samplePermittedValues = {
   boolean: true,
   date: new Date(2018, 0, 1),
-  number: 1,
+  integer: 1,
+  number: 1.5,
   string: 'allowed',
 };
 
@@ -89,6 +95,10 @@ describe('isValid(:validators, :options)', () => {
       CELL_DATA_TYPES.forEach((dataType: CellDataType) => {
         CELL_DATA_TYPES
           .filter((valueDataType) => valueDataType !== dataType)
+          .filter((valueDataType) => {
+            const supertypes = CELL_DATA_TYPE_SUPERTYPES[valueDataType] || [];
+            return !supertypes.includes(dataType)
+          })
           .forEach((valueDataType) => {
             const options: IsValidOptions = {
               allowUndefined: false,
