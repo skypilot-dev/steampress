@@ -16,7 +16,7 @@ const samplePermittedValues = {
 };
 
 
-describe('isValid(:validators, :options)', () => {
+describe('isValid(:cellValidators, :options)', () => {
   describe('options.allowUndefined', () => {
     it('if allowUndefined=true and the value is undefined, should return false', () => {
       const value = undefined;
@@ -53,13 +53,13 @@ describe('isValid(:validators, :options)', () => {
       expect(isValid(value, options)).toBe(true);
     });
   });
-  describe('options.validators', () => {
+  describe('options.cellValidators', () => {
     const isNumber: Validator = (cellValue): boolean => typeof cellValue === 'number';
     const isTruthy: Validator = (cellValue): boolean => !!cellValue;
     const isString: Validator = (cellValue): boolean => typeof cellValue === 'string';
     const isShort: Validator = (cellValue): boolean => cellValue.length < 5;
 
-    it('if all validators return true, should return true', () => {
+    it('if all cellValidators return true, should return true', () => {
       const value = '1234';
       const valueIsValid = isValid(value, { validators: [isString, isTruthy, isShort] });
       expect(valueIsValid).toBe(true);

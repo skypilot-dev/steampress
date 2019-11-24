@@ -22,6 +22,7 @@ export interface ExcelRow {
 
 export interface ParseColumnOptions {
   cellTransformers?: Transformer[];
+  cellValidators?: Validator[];
   dataType?: CellDataType;
   defaultValue?: any;
   disallowEmptyCellsInColumn?: boolean;
@@ -30,7 +31,6 @@ export interface ParseColumnOptions {
   ignoreRowIfTruthy?: boolean;
   outputProperty?: string;
   permittedValues?: any[];
-  validators?: Validator[];
 }
 
 export interface ParseRowOptions {
