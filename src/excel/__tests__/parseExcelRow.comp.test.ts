@@ -174,7 +174,7 @@ describe('parseExcelRow()', () => {
       expect(jsonRow).toEqual({ A: 'transforms are not applied', B: 'TRANSFORMS ARE APPLIED' });
     });
 
-    it('if `defaultValue` is not set and empty cells are disallowed an error should be thrown', () => {
+    it('if `defaultValue` is not set and empty cells are disallowed, an error should be thrown', () => {
       const rowOptions: ParseRowOptions = {
         columns: {
           A: { disallowEmptyCellsInColumn: true },
@@ -241,6 +241,51 @@ describe('parseExcelRow()', () => {
           parseExcelRow(excelRow, rowOptions);
         }).toThrow();
       });
+    });
+  });
+  describe('when `cellValidators` are set for a column', () => {
+    const alwaysFails = (): boolean => false;
+    const alwaysPasses = (): boolean => true;
+
+    it('if all validators pass, should succeed', () => {
+      const cellValidators = [alwaysPasses, alwaysPasses];
+      const rowOptions: ParseRowOptions = {
+        columns: { A: { cellValidators, dataType: 'string' } },
+      };
+      const excelRow: ExcelRow = { A: 'string' };
+      const parsedRow = parseExcelRow(excelRow, rowOptions);
+      expect(parsedRow).toEqual({ A: 'string' });
+    });
+
+    it('if any validator fails, an error should be thrown', () => {
+      const cellValidators = [alwaysPasses, alwaysFails];
+      const rowOptions: ParseRowOptions = {
+        columns: { A: { cellValidators, dataType: 'string' } },
+      };
+      const excelRow: ExcelRow = { A: 'string' };
+      expect(() => {
+        parseExcelRow(excelRow, rowOptions);
+      }).toThrow();
+    });
+
+    it('if the cell is empty & a default value is defined, validators should be skipped', () => {
+      const cellValidators = [alwaysFails];
+      const rowOptions: ParseRowOptions = {
+        columns: { A: { cellValidators, dataType: 'string', defaultValue: null } },
+      };
+      const excelRow: ExcelRow = { A: undefined };
+      const parsedRow = parseExcelRow(excelRow, rowOptions);
+      expect(parsedRow).toEqual({ A: null });
+    });
+
+    it('if the cell is empty, no default value is defined, & empty values are allowed, validators should be skipped', () => {
+      const cellValidators = [alwaysFails];
+      const rowOptions: ParseRowOptions = {
+        columns: { A: { cellValidators, dataType: 'string', defaultValue: null } },
+      };
+      const excelRow: ExcelRow = { A: undefined };
+      const parsedRow = parseExcelRow(excelRow, rowOptions);
+      expect(parsedRow).toEqual({ A: null });
     });
   });
 });

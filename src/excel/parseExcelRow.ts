@@ -39,6 +39,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     const columnLetter: string = desiredColumnLetters[i];
     const {
       cellTransformers = [],
+      cellValidators = [],
       dataType,
       defaultValue,
       disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
@@ -75,7 +76,12 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
             }
           }
         } else {
-          if (!isValid(initialValue, { dataType, permittedValues })) {
+          const isValidOptions = {
+            validators: cellValidators,
+            dataType,
+            permittedValues,
+          };
+          if (!isValid(initialValue, isValidOptions)) {
             throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
           }
         }
