@@ -1,3 +1,25 @@
+## 1.1.0-beta (2019-11-24)
+
+* add: `addProperty` & `duplicateProperty` can be called without `bind` 85165d1
+* add: A default value can be set for empty cells 1455329
+* add: Can omit a row when a cell contains a falsy value 940a49f
+* add: Can set a column's data type & reject values of incorrect type 5215ca1
+* add: Can set permitted values & reject nonpermitted values 7bd8c0f
+* add: Can specify integer as a column's data type c94a3d8
+* add: Columns can be parsed without configuration 558608f
+* add: Empty values can be disallowed for a cell or all cells 104a4a2
+* add: Rows can be omitted when cell content is truthy 846039d
+* Disallow empty cells 5f015f5
+* Make the row index passed to the row parser optional bfe9dbf
+* Refactor data-type validation & tests d85dd5b
+* Reformat & reorganize code 77c024c
+* Rename tests to conform to convention 66c9064
+* Simplify row-parsing tests 9e34dbb
+* Update dependencies 90bb3d6
+* fix: Transforms should not be applied to a default value 544a869
+
+
+
 ## 1.0.0 (2019-11-24)
 
 * Add author's email to package file 5011b23
