@@ -7,9 +7,21 @@ const dataTypes: CellDataType[] = [
 ];
 const sampleValues = {
   boolean: true,
-  date: new Date(),
+  date: new Date(2018, 0, 1),
   number: 1,
-  string: 'string',
+  string: 'allowed',
+};
+const samplePermittedValues = {
+  boolean: [true],
+  date: [new Date(2018, 0, 1), new Date(2019, 0, 1)],
+  number: [-1, 1],
+  string: ['allowed', 'also allowed'],
+};
+const sampleNonpermittedValues = {
+  boolean: false,
+  date: new Date(1918, 0, 1),
+  number: 0,
+  string: 'not allowed',
 };
 
 describe('parseExcelRow()', () => {
@@ -195,6 +207,35 @@ describe('parseExcelRow()', () => {
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
       expect(jsonRow).toEqual({});
+    });
+  });
+
+  describe('when `permittedValues` is set for a column', () => {
+    it('if the cell has a permitted value, should succeed', () => {
+      dataTypes.forEach((dataType: CellDataType) => {
+        const permittedValues = samplePermittedValues[dataType];
+        const rowOptions: ParseRowOptions = {
+          columns: { A: { dataType, permittedValues } },
+        };
+        const value = sampleValues[dataType];
+        const excelRow: ExcelRow = { A: value };
+        const parsedRow = parseExcelRow(excelRow, rowOptions);
+        expect(parsedRow).toEqual({ A: value });
+      });
+    });
+
+    it('if the cell has a nonpermitted value, should throw an error', () => {
+      dataTypes.forEach((dataType: CellDataType) => {
+        const permittedValues = samplePermittedValues[dataType];
+        const rowOptions: ParseRowOptions = {
+          columns: { A: { dataType, permittedValues } },
+        };
+        const value = sampleNonpermittedValues[dataType];
+        const excelRow: ExcelRow = { A: value };
+        expect(() => {
+          parseExcelRow(excelRow, rowOptions);
+        }).toThrow();
+      });
     });
   });
 });

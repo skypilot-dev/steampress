@@ -27,6 +27,7 @@ export interface ParseColumnOptions {
   ignoreRowIfFalsy?: boolean; // provides a way to selectively ignore rows
   ignoreRowIfTruthy?: boolean;
   outputProperty?: string;
+  permittedValues?: any[];
   validators?: Validator[];
 }
 

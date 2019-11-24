@@ -38,13 +38,14 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
   for (let i = 0; i < desiredColumnLetters.length; i += 1) {
     const columnLetter: string = desiredColumnLetters[i];
     const {
+      cellTransformers = [],
       dataType,
       defaultValue,
       disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
       ignoreRowIfFalsy = false,
       ignoreRowIfTruthy = false,
       outputProperty = columnLetter,
-      cellTransformers = [],
+      permittedValues,
     } = columns[columnLetter];
 
     const initialValue: Literal = row[columnLetter];
@@ -74,7 +75,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
             }
           }
         } else {
-          if (!isValid(initialValue, { dataType })) {
+          if (!isValid(initialValue, { dataType, permittedValues })) {
             throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
           }
         }
