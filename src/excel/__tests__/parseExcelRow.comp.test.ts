@@ -32,15 +32,15 @@ describe('parseExcelRow()', () => {
   describe('when `ignoreRowIfTruthy=true` for a column', () => {
     const rowOptions: ParseRowOptions = {
       columns: {
-        a: { ignoreRowIfTruthy: true, outputProperty: 'colA' },
-        b: { outputProperty: 'colB' },
+        A: { ignoreRowIfTruthy: true },
+        B: {},
       },
     };
 
     it('if a cell in that column has content, should skip the row', () => {
       const excelRow: ExcelRow = {
-        a: 1,
-        b: 2,
+        A: 1,
+        B: 2,
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
       expect(jsonRow).toEqual(null);
@@ -48,19 +48,19 @@ describe('parseExcelRow()', () => {
 
     it('if a cell in that column is empty, should omit the column but not skip the row', () => {
       const excelRow: ExcelRow = {
-        a: undefined,
-        b: 2,
+        A: undefined,
+        B: 2,
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({ colB: 2 });
+      expect(jsonRow).toEqual({ B: 2 });
     });
 
     it('if a cell in that column is empty or falsy, should omit the column not skip the row', () => {
       const falsyValues = [0, ''];
       falsyValues.forEach((falsyValue) => {
-        const excelRow: ExcelRow = { a: falsyValue, b: 2 };
+        const excelRow: ExcelRow = { A: falsyValue, B: 2 };
         const jsonRow = parseExcelRow(excelRow, rowOptions);
-        expect(jsonRow).toEqual({ colB: 2 });
+        expect(jsonRow).toEqual({ B: 2 });
       });
     });
   });
@@ -86,11 +86,11 @@ describe('parseExcelRow()', () => {
     it('if `defaultValue` is not set and empty cells are disallowed an error should be thrown', () => {
       const rowOptions: ParseRowOptions = {
         columns: {
-          a: { outputProperty: 'colA', disallowEmptyCellsInColumn: true },
+          A: { disallowEmptyCellsInColumn: true },
         },
       };
       const excelRow: ExcelRow = {
-        a: undefined,
+        A: undefined,
       };
       expect(() => {
         parseExcelRow(excelRow, rowOptions);
@@ -100,24 +100,24 @@ describe('parseExcelRow()', () => {
     it('if `defaultValue` is not set and empty cells are allowed, the cell should get the value `null`', () => {
       const rowOptions: ParseRowOptions = {
         columns: {
-          a: { outputProperty: 'colA', disallowEmptyCellsInColumn: false },
+          A: { disallowEmptyCellsInColumn: false },
         },
       };
       const excelRow: ExcelRow = {
-        a: undefined,
+        A: undefined,
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({ colA: null });
+      expect(jsonRow).toEqual({ A: null });
     });
 
     it('if the empty cell is in a `ignoreRowIfTruthy` column, the row should be not be rejected', () => {
       const rowOptions: ParseRowOptions = {
         columns: {
-          a: { ignoreRowIfTruthy: true, outputProperty: 'colA' },
+          A: { ignoreRowIfTruthy: true },
         },
       };
       const excelRow: ExcelRow = {
-        a: undefined,
+        A: undefined,
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
       expect(jsonRow).toEqual({});
