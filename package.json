@@ -1,37 +1,26 @@
 {
   "name": "@skypilot/steampress",
-  "version": "0.5.10-alpha",
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
+  "version": "1.0.0",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "scripts": {
-    "all-ci-checks": "yarn run all-cq-checks && yarn run build",
-    "all-cq-checks": "yarn run check-types && yarn run lint --quiet && yarn test",
-    "build": "rm -rf lib && yarn run compile-ts",
-    "check-types": "tsc",
-    "ci": "yarn run all-ci-checks",
-    "cq": "yarn run all-cq-checks",
-    "compile-ts": "babel ./src --out-dir ./lib --extensions .ts --ignore '**/*.test.ts'",
-    "generate-typings": "tsc --project tsconfig.generate-typings.json",
-    "lint": "eslint --cache '**/*.{js,ts}'",
-    "prepublishOnly": "yarn run check-types && yarn run lint --quiet && yarn test && yarn run build && yarn run generate-typings",
-    "test": "jest"
+  "author": {
+    "email": "wthorsen@skypilot.dev",
+    "name": "William Thorsen"
   },
   "keywords": [
-    "file",
     "conversion",
     "converter",
     "excel",
+    "file",
     "json",
     "parse",
     "spreadsheet",
     "transform"
   ],
-  "author": {
-    "name": "William Thorsen",
-    "email": "wthorsen@skypilot.dev"
+  "dependencies": {
+    "@skypilot/sugarbowl": "^0.11.0",
+    "convert-excel-to-json": "^1.6.1"
   },
-  "license": "ISC",
   "devDependencies": {
     "@skypilot/common-types": "^0.1.2",
     "@skypilot/toolchain": "^1.0.0",
@@ -40,11 +29,22 @@
     "bumped-finepack": "^0.3.0",
     "bumped-terminal": "^0.7.8"
   },
-  "dependencies": {
-    "@skypilot/sugarbowl": "^0.11.0",
-    "convert-excel-to-json": "^1.6.1"
-  },
   "files": [
     "/lib"
-  ]
+  ],
+  "scripts": {
+    "all-ci-checks": "yarn run all-cq-checks && yarn run build",
+    "all-cq-checks": "yarn run check-types && yarn run lint --quiet && yarn test",
+    "build": "rm -rf lib && yarn run compile-ts",
+    "check-types": "tsc",
+    "ci": "yarn run all-ci-checks",
+    "compile-ts": "babel ./src --out-dir ./lib --extensions .ts --ignore '**/*.test.ts'",
+    "cq": "yarn run all-cq-checks",
+    "generate-typings": "tsc --project tsconfig.generate-typings.json",
+    "lint": "eslint --cache '**/*.{js,ts}'",
+    "prepublishOnly": "yarn run check-types && yarn run lint --quiet && yarn test && yarn run build && yarn run generate-typings",
+    "test": "jest"
+  },
+  "license": "ISC",
+  "types": "lib/index.d.ts"
 }
