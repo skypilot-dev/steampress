@@ -4,11 +4,11 @@ import { Integer, JsonObject } from '@skypilot/common-types';
 
 
 /* -- Typings -- */
+export type CellDataType = LiteralCellDataType | 'date' | 'integer';
+
 export type ExcelSheet = ExcelRow[];
 
-export interface ExcelRow {
-  [columnLetter: string]: any;
-}
+export type LiteralCellDataType = 'boolean' | 'number' | 'string';
 
 type ObjectArrayTransformer = (value: JsonObject[]) => JsonObject[];
 
@@ -16,11 +16,20 @@ export type Transformer = (value: any) => any;
 
 export type Validator = (value: any) => boolean;
 
+export interface ExcelRow {
+  [columnLetter: string]: any;
+}
+
 export interface ParseColumnOptions {
   cellTransformers?: Transformer[];
+  dataType?: CellDataType;
+  defaultValue?: any;
   disallowEmptyCellsInColumn?: boolean;
   expectedHeader?: string;
-  outputProperty: string;
+  ignoreRowIfFalsy?: boolean; // provides a way to selectively ignore rows
+  ignoreRowIfTruthy?: boolean;
+  outputProperty?: string;
+  permittedValues?: any[];
   validators?: Validator[];
 }
 
@@ -30,7 +39,7 @@ export interface ParseRowOptions {
   };
   disallowEmptyCellsInRow?: boolean;
   globalCellTransformers?: Transformer[];
-  rowIndex: Integer;
+  rowIndex?: Integer;
   rowTransformers?: Transformer[];
   verbose?: boolean;
 }

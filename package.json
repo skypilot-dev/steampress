@@ -29,6 +29,10 @@
     "bumped-finepack": "^0.3.0",
     "bumped-terminal": "^0.7.8"
   },
+  "dependencies": {
+    "@skypilot/sugarbowl": "^0.12.0",
+    "convert-excel-to-json": "^1.6.1"
+  },
   "files": [
     "/lib"
   ],

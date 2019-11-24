@@ -1,11 +1,18 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, @typescript-eslint/no-explicit-any */
 
 /* -- Imports -- */
-import { JsonObject } from '@skypilot/common-types';
-import { isValidDate } from '@skypilot/sugarbowl';
+import { JsonObject, Literal } from '@skypilot/common-types';
 
+import { isValid } from './isValid';
 import { transform } from './transform';
 import { ExcelRow, ParseRowOptions } from './types';
+
+
+/* -- Helper functions -- */
+function cellIsEmpty(value: any): boolean {
+  /* The Excel converter gives empty cells a value of `undefined`. */
+  return value === undefined;
+}
 
 
 /* -- Main function -- */
@@ -15,11 +22,10 @@ import { ExcelRow, ParseRowOptions } from './types';
 export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonObject | null {
   const {
     columns,
-    disallowEmptyCellsInRow,
+    disallowEmptyCellsInRow = false,
     globalCellTransformers = [],
-    rowIndex,
+    rowIndex = 0,
     rowTransformers = [],
-    verbose = false,
   } = rowOptions;
 
   /* The row object contains all columns, but only those named in `columns` are of interest. */
@@ -28,52 +34,59 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
   /* Initialize the object that will store the transformed row. */
   const transformedRow: JsonObject = {};
 
-  /* TODO: Refactor exclusion of empty cells */
-  let containsDisallowedEmptyCells = false;
-
   // Copy each desired column value to the corresponding `outputProperty` field on the new object
-  desiredColumnLetters.forEach((columnLetter: string) => {
-
+  for (let i = 0; i < desiredColumnLetters.length; i += 1) {
+    const columnLetter: string = desiredColumnLetters[i];
     const {
-      disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
-      outputProperty,
       cellTransformers = [],
+      dataType,
+      defaultValue,
+      disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
+      ignoreRowIfFalsy = false,
+      ignoreRowIfTruthy = false,
+      outputProperty = columnLetter,
+      permittedValues,
     } = columns[columnLetter];
 
-    const initialValue = row[columnLetter];
-    if (!['number', 'string', 'undefined'].includes(typeof initialValue)) {
-      /* The only supported object type is Date */
-      if (!isValidDate(initialValue)) {
-        throw new Error(`Unrecognized type: ${typeof initialValue}`);
-      }
-    }
+    const initialValue: Literal = row[columnLetter];
+    let transformedValue: Literal | null = initialValue;
 
-    let finalValue;
-    if (typeof initialValue === 'undefined') {
-      if (disallowEmptyCellsInColumn) {
-        /* TODO: Add option to allow or disallow exclusions */
-        if (verbose) {
-          console.log(`WARNING: Row ${rowIndex + 1} contains no value for '${outputProperty}'`);
-        }
-        containsDisallowedEmptyCells = true;
-        return;
-      } else {
-        finalValue = null;
-      }
+    if (cellIsEmpty(initialValue) && defaultValue !== undefined) {
+      transformedValue = defaultValue;
     } else {
-      finalValue = transform(initialValue, [
+      if (ignoreRowIfTruthy) {
+        if (initialValue) {
+          return null;
+        }
+      } else if (ignoreRowIfFalsy) {
+        if (!initialValue) {
+          return null;
+        }
+      } else {
+        /* Note that an empty value is OK if `ignoreRowIfTruthy`, because the value is discarded. */
+        if (cellIsEmpty(initialValue)) {
+          if (defaultValue !== undefined) {
+            transformedValue = defaultValue;
+          } else {
+            if (!disallowEmptyCellsInColumn) {
+              transformedValue = null;
+            } else {
+              throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
+            }
+          }
+        } else {
+          if (!isValid(initialValue, { dataType, permittedValues })) {
+            throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
+          }
+        }
+      }
+      transformedValue = transform(transformedValue, [
         ...globalCellTransformers, ...cellTransformers,
       ]);
     }
-    transformedRow[outputProperty] = finalValue;
-  });
-
-  if (containsDisallowedEmptyCells) {
-    if (verbose) {
-      console.log(`Row ${rowIndex + 1} has been excluded because it is missing required values`);
+    if (!ignoreRowIfTruthy) {
+      transformedRow[outputProperty] = transformedValue;
     }
-    return null;
-  } else {
-    return transform(transformedRow, rowTransformers);
   }
+  return transform(transformedRow, rowTransformers);
 }

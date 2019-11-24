@@ -1,6 +1,6 @@
 import { addProperty } from '../addProperty';
 
-describe('addProperty(:object, { key, value })', () => {
+describe('addProperty({ key, value }, :object)', () => {
   it('should add the key:value pair to the object and return it', () => {
     const original = { numberProp: 1, stringProp: 'value' };
 
@@ -26,5 +26,18 @@ describe('addProperty(:object, { key, value })', () => {
     expect(() => {
       addProperty({ key: 'stringProp', value: 'overwritten value' }, original);
     }).toThrow();
+  });
+});
+
+/* Do a single test of the curried function as proof of concept. */
+describe('addProperty({ key, value })(:object)', () => {
+  it('should add the key:value pair to the object and return it', () => {
+    const original = { numberProp: 1, stringProp: 'value' };
+
+    const actual = addProperty({ key: 'newStringProp', value: 'new value' })(original);
+    const expected = { numberProp: 1, stringProp: 'value', newStringProp: 'new value' };
+
+    expect(actual).toBe(original);
+    expect(actual).toEqual(expected);
   });
 });
