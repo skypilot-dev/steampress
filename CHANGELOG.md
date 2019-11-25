@@ -1,3 +1,8 @@
+## <small>1.1.3 (2019-11-25)</small>
+
+
+
+
 ## <small>1.1.3-beta (2019-11-25)</small>
 
 * chg: `defaultValue` > `ignoreRowIf` > `disallowEmptyCells...` ([84ddc98](https://github.com/skypilotcc/steampress/commit/84ddc98))
