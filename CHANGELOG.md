@@ -1,3 +1,10 @@
+## 1.1.0 (2019-11-25)
+
+* add: Cell-content validator accepts custom validation functions 45e3a9a
+* Rename cell `validators` to `cellValidators` e9d6a26
+
+
+
 ## 1.1.0-beta (2019-11-24)
 
 * add: `addProperty` & `duplicateProperty` can be called without `bind` 85165d1
