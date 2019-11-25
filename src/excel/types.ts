@@ -8,6 +8,8 @@ export type CellDataType = LiteralCellDataType | 'date' | 'integer';
 
 export type ExcelSheet = ExcelRow[];
 
+export type IgnoreRowIf = 'falsy' | 'truthy'
+
 export type LiteralCellDataType = 'boolean' | 'number' | 'string';
 
 type ObjectArrayTransformer = (value: JsonObject[]) => JsonObject[];
@@ -27,6 +29,7 @@ export interface ParseColumnOptions {
   defaultValue?: any;
   disallowEmptyCellsInColumn?: boolean;
   expectedHeader?: string;
+  ignoreRowIf?: IgnoreRowIf;
   ignoreRowIfFalsy?: boolean; // provides a way to selectively ignore rows
   ignoreRowIfTruthy?: boolean;
   outputProperty?: string;

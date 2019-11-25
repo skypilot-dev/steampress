@@ -5,13 +5,27 @@ import { JsonObject, Literal } from '@skypilot/common-types';
 
 import { isValid } from './isValid';
 import { transform } from './transform';
-import { ExcelRow, ParseRowOptions } from './types';
+import { ExcelRow, IgnoreRowIf, ParseRowOptions } from './types';
 
 
 /* -- Helper functions -- */
 function cellIsEmpty(value: any): boolean {
   /* The Excel converter gives empty cells a value of `undefined`. */
   return value === undefined;
+}
+
+
+/* Given deprecated `ignoreRowIf...` settings, return the corresponding `ignoreRowIf` setting. */
+function convertDeprecatedIgnoreRowIf(
+  ignoreRowIfFalsy?: boolean, ignoreRowIfTruthy?: boolean
+): IgnoreRowIf | null {
+  if (ignoreRowIfTruthy) {
+    return 'truthy';
+  }
+  if (ignoreRowIfFalsy) {
+    return 'falsy';
+  }
+  return null;
 }
 
 
@@ -47,8 +61,9 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       dataType,
       defaultValue,
       disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
-      ignoreRowIfFalsy = false,
-      ignoreRowIfTruthy = false,
+      ignoreRowIfFalsy, // deprecated
+      ignoreRowIfTruthy, // deprecated
+      ignoreRowIf = convertDeprecatedIgnoreRowIf(ignoreRowIfFalsy, ignoreRowIfTruthy),
       outputProperty = columnLetter,
       permittedValues,
     } = columns[columnLetter];
@@ -71,14 +86,23 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
         initialValue = null;
       }
     } else {
+      /* The cell is not empty, so start with the value it contains. */
       initialValue = actualValue as Literal | null;
     }
-    let transformedValue: Literal | null = initialValue;
 
-    if ((ignoreRowIfTruthy && !!transformedValue) || (ignoreRowIfFalsy && !transformedValue)) {
+    console.log('initial value:', initialValue);
+    console.log('initial value is:', !initialValue);
+    console.log('ignoreRowIf:', ignoreRowIf);
+    if (
+      (ignoreRowIf === 'truthy' && !!initialValue) || (ignoreRowIf === 'falsy' && !initialValue)
+    ) {
+      console.log('skipping!');
       skipRow = true;
       return;
     }
+
+    /* Assume the final value will be the initial value. */
+    let transformedValue: Literal | null = initialValue;
 
     const isValidOptions = {
       validators: cellValidators,

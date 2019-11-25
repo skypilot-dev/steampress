@@ -1,6 +1,6 @@
 import { CELL_DATA_TYPE_SUPERTYPES, CELL_DATA_TYPES } from '../isValid';
 import { parseExcelRow } from '../parseExcelRow';
-import { CellDataType, ExcelRow, ParseRowOptions } from '../types';
+import { CellDataType, ExcelRow, IgnoreRowIf, ParseRowOptions } from '../types';
 
 
 const samplePermittedValueLists = {
@@ -24,6 +24,7 @@ const samplePermittedValues = {
   number: 1.5,
   string: 'allowed',
 };
+
 
 describe('parseExcelRow()', () => {
   describe('when `dataType` is set for a column', () => {
@@ -93,65 +94,77 @@ describe('parseExcelRow()', () => {
     });
   });
 
-  describe('when `ignoreRowIfFalsy=true` for a column', () => {
-    const rowOptions: ParseRowOptions = {
-      columns: {
-        A: { ignoreRowIfFalsy: true },
-        B: {},
-      },
-    };
-
-    it('if a cell in that column has falsy content, should skip the row', () => {
-      const excelRow: ExcelRow = {
-        A: null,
-        B: 2,
+  describe("when `ignoreRowIf='falsy'` for a column", () => {
+    [
+      { ignoreRowIf: 'falsy' as IgnoreRowIf },
+      /* DEPRECATED: Remove this test when `ignoreRowIfFalsy` is no longer supported. */
+      { ignoreRowIfFalsy: true },
+    ].forEach((ignoreIfSetting) => {
+      const rowOptions: ParseRowOptions = {
+        columns: {
+          A: { ...ignoreIfSetting },
+          B: {},
+        },
       };
-      const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual(null);
-    });
 
-    it('if a cell in that column has truthy content, should not skip the row', () => {
-      const excelRow: ExcelRow = {
-        A: 1,
-        B: 2,
-      };
-      const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({ A: 1, B: 2 });
+      it('if a cell in that column has falsy content, should skip the row', () => {
+        const excelRow: ExcelRow = {
+          A: null,
+          B: 2,
+        };
+        const jsonRow = parseExcelRow(excelRow, rowOptions);
+        expect(jsonRow).toEqual(null);
+      });
+
+      it('if a cell in that column has truthy content, should not skip the row', () => {
+        const excelRow: ExcelRow = {
+          A: 1,
+          B: 2,
+        };
+        const jsonRow = parseExcelRow(excelRow, rowOptions);
+        expect(jsonRow).toEqual({ A: 1, B: 2 });
+      });
     });
   });
 
-  describe('when `ignoreRowIfTruthy=true` for a column', () => {
-    const rowOptions: ParseRowOptions = {
-      columns: {
-        A: { ignoreRowIfTruthy: true },
-        B: {},
-      },
-    };
-
-    it('if a cell in that column has content, should skip the row', () => {
-      const excelRow: ExcelRow = {
-        A: 1,
-        B: 2,
+  describe("when `ignoreRowIf='truthy'` for a column", () => {
+    [
+      { ignoreRowIf: 'truthy' as IgnoreRowIf },
+      /* DEPRECATED: Remove this test when `ignoreRowIfTruthy` is no longer supported. */
+      { ignoreRowIfTruthy: true },
+    ].forEach((ignoreIfSetting) => {
+      const rowOptions: ParseRowOptions = {
+        columns: {
+          A: { ...ignoreIfSetting },
+          B: {},
+        },
       };
-      const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual(null);
-    });
 
-    it('if a cell in that column is empty, should not skip the row', () => {
-      const excelRow: ExcelRow = {
-        A: undefined,
-        B: 2,
-      };
-      const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({ A: null, B: 2 });
-    });
-
-    it('if a cell in that column is not truthy, should not skip the row', () => {
-      const falsyValues = [0, ''];
-      falsyValues.forEach((falsyValue) => {
-        const excelRow: ExcelRow = { A: falsyValue, B: 2 };
+      it('if a cell in that column has content, should skip the row', () => {
+        const excelRow: ExcelRow = {
+          A: 1,
+          B: 2,
+        };
         const jsonRow = parseExcelRow(excelRow, rowOptions);
-        expect(jsonRow).toEqual({ A: falsyValue, B: 2 });
+        expect(jsonRow).toEqual(null);
+      });
+
+      it('if a cell in that column is empty, should not skip the row', () => {
+        const excelRow: ExcelRow = {
+          A: undefined,
+          B: 2,
+        };
+        const jsonRow = parseExcelRow(excelRow, rowOptions);
+        expect(jsonRow).toEqual({ A: null, B: 2 });
+      });
+
+      it('if a cell in that column is not truthy, should not skip the row', () => {
+        const falsyValues = [0, ''];
+        falsyValues.forEach((falsyValue) => {
+          const excelRow: ExcelRow = { A: falsyValue, B: 2 };
+          const jsonRow = parseExcelRow(excelRow, rowOptions);
+          expect(jsonRow).toEqual({ A: falsyValue, B: 2 });
+        });
       });
     });
   });
@@ -243,6 +256,7 @@ describe('parseExcelRow()', () => {
       });
     });
   });
+
   describe('when `cellValidators` are set for a column', () => {
     const alwaysFails = (): boolean => false;
     const alwaysPasses = (): boolean => true;
