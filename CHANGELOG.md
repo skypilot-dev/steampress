@@ -1,3 +1,9 @@
+## <small>1.1.1 (2019-11-25)</small>
+
+* fix: When false, 'ignore row' checks should not bypass validators 0a48a37
+
+
+
 ## 1.1.0 (2019-11-25)
 
 * add: Cell-content validator accepts custom validation functions 45e3a9a
