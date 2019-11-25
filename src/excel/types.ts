@@ -8,7 +8,7 @@ export type CellDataType = LiteralCellDataType | 'date' | 'integer';
 
 export type ExcelSheet = ExcelRow[];
 
-export type IgnoreRowIf = 'falsy' | 'truthy'
+export type IgnoreRowIf = 'empty' | 'falsy' | 'truthy'
 
 export type LiteralCellDataType = 'boolean' | 'number' | 'string';
 
@@ -27,10 +27,10 @@ export interface ParseColumnOptions {
   cellValidators?: Validator[];
   dataType?: CellDataType;
   defaultValue?: any;
-  disallowEmptyCellsInColumn?: boolean;
+  disallowEmptyCellsInColumn?: boolean; // ignored if `defaultValue` is set or `ignoreRowIf='empty'`
   expectedHeader?: string;
-  ignoreRowIf?: IgnoreRowIf;
-  ignoreRowIfFalsy?: boolean; // provides a way to selectively ignore rows
+  ignoreRowIf?: IgnoreRowIf; // ignored if `defaultValue` is set
+  ignoreRowIfFalsy?: boolean;
   ignoreRowIfTruthy?: boolean;
   outputProperty?: string;
   permittedValues?: any[];

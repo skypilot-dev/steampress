@@ -94,6 +94,33 @@ describe('parseExcelRow()', () => {
     });
   });
 
+  describe("when `ignoreRowIf='empty'` for a column", () => {
+    const rowOptions: ParseRowOptions = {
+      columns: {
+        A: { ignoreRowIf: 'empty' },
+        B: {},
+      },
+    };
+
+    it('if a cell in that column is empty and no default value is set, should skip the row', () => {
+      const excelRow: ExcelRow = {
+        A: undefined,
+        B: 2,
+      };
+      const jsonRow = parseExcelRow(excelRow, rowOptions);
+      expect(jsonRow).toEqual(null);
+    });
+
+    it('if a cell in that column has truthy content, should not skip the row', () => {
+      const excelRow: ExcelRow = {
+        A: 1,
+        B: 2,
+      };
+      const jsonRow = parseExcelRow(excelRow, rowOptions);
+      expect(jsonRow).toEqual({ A: 1, B: 2 });
+    });
+  });
+
   describe("when `ignoreRowIf='falsy'` for a column", () => {
     [
       { ignoreRowIf: 'falsy' as IgnoreRowIf },
@@ -170,11 +197,16 @@ describe('parseExcelRow()', () => {
   });
 
   describe('when a cell is empty', () => {
-    it('if `defaultValue` is set, the cell should get the default value without transformations', () => {
+    it('if `defaultValue` is set, `disallowEmptyCellsInColumn` and `ignoreRowIf` should be ignored and the cell should get the default value without transformations', () => {
       const toUpperCase = (str: string): string => str.toUpperCase();
       const rowOptions: ParseRowOptions = {
         columns: {
-          A: { cellTransformers: [toUpperCase], defaultValue: 'transforms are not applied' },
+          A: {
+            cellTransformers: [toUpperCase],
+            defaultValue: 'transforms are not applied',
+            disallowEmptyCellsInColumn: true,
+            ignoreRowIf: 'empty',
+          },
           B: { cellTransformers: [toUpperCase] },
         },
       };

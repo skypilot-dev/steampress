@@ -78,6 +78,11 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
         return;
       }
 
+      if (ignoreRowIf === 'empty') {
+        skipRow = true;
+        return;
+      }
+
       if (disallowEmptyCellsInColumn) {
         /* TODO: Log an exception instead of throwing an error. */
         throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
@@ -90,13 +95,9 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       initialValue = actualValue as Literal | null;
     }
 
-    console.log('initial value:', initialValue);
-    console.log('initial value is:', !initialValue);
-    console.log('ignoreRowIf:', ignoreRowIf);
     if (
       (ignoreRowIf === 'truthy' && !!initialValue) || (ignoreRowIf === 'falsy' && !initialValue)
     ) {
-      console.log('skipping!');
       skipRow = true;
       return;
     }
