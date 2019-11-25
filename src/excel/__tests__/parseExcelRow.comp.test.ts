@@ -94,6 +94,7 @@ describe('parseExcelRow()', () => {
     });
   });
 
+
   describe("when `ignoreRowIf='empty'` for a column", () => {
     const rowOptions: ParseRowOptions = {
       columns: {
@@ -121,7 +122,7 @@ describe('parseExcelRow()', () => {
     });
   });
 
-  describe("when `ignoreRowIf='falsy'` for a column", () => {
+  describe("when `ignoreRowIf='falsy'` for a column, `disallowEmptyCellsInColumn` should be ignored and", () => {
     [
       { ignoreRowIf: 'falsy' as IgnoreRowIf },
       /* DEPRECATED: Remove this test when `ignoreRowIfFalsy` is no longer supported. */
@@ -134,16 +135,25 @@ describe('parseExcelRow()', () => {
         },
       };
 
-      it('if a cell in that column has falsy content, should skip the row', () => {
+      it('if a cell in that column is empty, the row should be skipped', () => {
         const excelRow: ExcelRow = {
-          A: null,
+          A: undefined,
           B: 2,
         };
         const jsonRow = parseExcelRow(excelRow, rowOptions);
         expect(jsonRow).toEqual(null);
       });
 
-      it('if a cell in that column has truthy content, should not skip the row', () => {
+      it('if a cell in that column has falsy content, the row should be skipped', () => {
+        const excelRow: ExcelRow = {
+          A: 0,
+          B: 2,
+        };
+        const jsonRow = parseExcelRow(excelRow, rowOptions);
+        expect(jsonRow).toEqual(null);
+      });
+
+      it('if a cell in that column has truthy content, the row should not be skipped', () => {
         const excelRow: ExcelRow = {
           A: 1,
           B: 2,
@@ -176,7 +186,7 @@ describe('parseExcelRow()', () => {
         expect(jsonRow).toEqual(null);
       });
 
-      it('if a cell in that column is empty, should not skip the row', () => {
+      it('if a cell in that column is empty, `disallowEmptyCellsInColumn` should be ignored and the row should not be skipped', () => {
         const excelRow: ExcelRow = {
           A: undefined,
           B: 2,
@@ -185,7 +195,7 @@ describe('parseExcelRow()', () => {
         expect(jsonRow).toEqual({ A: null, B: 2 });
       });
 
-      it('if a cell in that column is not truthy, should not skip the row', () => {
+      it('if a cell in that column is falsy, should not skip the row', () => {
         const falsyValues = [0, ''];
         falsyValues.forEach((falsyValue) => {
           const excelRow: ExcelRow = { A: falsyValue, B: 2 };
@@ -219,7 +229,7 @@ describe('parseExcelRow()', () => {
       expect(jsonRow).toEqual({ A: 'transforms are not applied', B: 'TRANSFORMS ARE APPLIED' });
     });
 
-    it('if `defaultValue` is not set and empty cells are disallowed, an error should be thrown', () => {
+    it('if `defaultValue` and `ignoreRowIf` are not set and empty cells are disallowed, an error should be thrown', () => {
       const rowOptions: ParseRowOptions = {
         columns: {
           A: { disallowEmptyCellsInColumn: true },
@@ -233,23 +243,10 @@ describe('parseExcelRow()', () => {
       }).toThrow();
     });
 
-    it('if `defaultValue` is not set and empty cells are allowed, the cell should get the value `null`', () => {
+    it('if `defaultValue` and `ignoreRowIf` are not set and empty cells are allowed, the cell should get the value `null`', () => {
       const rowOptions: ParseRowOptions = {
         columns: {
           A: { disallowEmptyCellsInColumn: false },
-        },
-      };
-      const excelRow: ExcelRow = {
-        A: undefined,
-      };
-      const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({ A: null });
-    });
-
-    it('if the empty cell is in a `ignoreRowIfTruthy` column, the row should be not be rejected', () => {
-      const rowOptions: ParseRowOptions = {
-        columns: {
-          A: { ignoreRowIfTruthy: true },
         },
       };
       const excelRow: ExcelRow = {

@@ -72,24 +72,25 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
     let initialValue: Literal | null;
 
     if (cellIsEmpty(actualValue)) {
+      /* If `defaultValue` is set, `ignoreRowIf` and `disallowEmptyCellsInColumn` are ignored. */
       if (defaultValue !== undefined) {
         /* The cell is empty and a default has been provided, so use the default and return. */
         transformedRow[outputProperty] = defaultValue;
         return;
       }
 
-      if (ignoreRowIf === 'empty') {
-        skipRow = true;
-        return;
-      }
-
-      if (disallowEmptyCellsInColumn) {
+      /* If `ignoreRowIf` is set, `disallowEmptyCellsInColumn` is ignored. */
+      if (ignoreRowIf) {
+        if (ignoreRowIf === 'empty' || ignoreRowIf === 'falsy') {
+          skipRow = true;
+          return;
+        }
+      } else if (disallowEmptyCellsInColumn) {
         /* TODO: Log an exception instead of throwing an error. */
         throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
-      } else {
-        /* Use a value of `null` for empty cells. */
-        initialValue = null;
       }
+      /* Use a value of `null` for empty cells. */
+      initialValue = null;
     } else {
       /* The cell is not empty, so start with the value it contains. */
       initialValue = actualValue as Literal | null;
