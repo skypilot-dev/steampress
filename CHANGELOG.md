@@ -1,3 +1,11 @@
+## <small>1.1.3-beta (2019-11-25)</small>
+
+* chg: `defaultValue` > `ignoreRowIf` > `disallowEmptyCells...` ([84ddc98](https://github.com/skypilotcc/steampress/commit/84ddc98))
+* chg: New `ignoreRowIf` option supersedes old `ignoreRowIf...` options ([07818db](https://github.com/skypilotcc/steampress/commit/07818db))
+* add: Can ignore a row when a cell is empty ([6db9d67](https://github.com/skypilotcc/steampress/commit/6db9d67))
+
+
+
 ## <small>1.1.2 (2019-11-25)</small>
 
 * Add missing details to package file ([1291d27](https://github.com/skypilotcc/steampress/commit/1291d27))
