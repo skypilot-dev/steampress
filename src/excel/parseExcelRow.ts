@@ -34,9 +34,13 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
   /* Initialize the object that will store the transformed row. */
   const transformedRow: JsonObject = {};
 
+  let skipRow = false;
+
   // Copy each desired column value to the corresponding `outputProperty` field on the new object
-  for (let i = 0; i < desiredColumnLetters.length; i += 1) {
-    const columnLetter: string = desiredColumnLetters[i];
+  desiredColumnLetters.forEach((columnLetter: string) => {
+    if (skipRow) {
+      return;
+    }
     const {
       cellTransformers = [],
       cellValidators = [],
@@ -49,50 +53,50 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       permittedValues,
     } = columns[columnLetter];
 
-    const initialValue: Literal = row[columnLetter];
+    const actualValue: Literal | undefined = row[columnLetter];
+    let initialValue: Literal | null;
+
+    if (cellIsEmpty(actualValue)) {
+      if (defaultValue !== undefined) {
+        /* The cell is empty and a default has been provided, so use the default and return. */
+        transformedRow[outputProperty] = defaultValue;
+        return;
+      }
+
+      if (disallowEmptyCellsInColumn) {
+        /* TODO: Log an exception instead of throwing an error. */
+        throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
+      } else {
+        /* Use a value of `null` for empty cells. */
+        initialValue = null;
+      }
+    } else {
+      initialValue = actualValue as Literal | null;
+    }
     let transformedValue: Literal | null = initialValue;
 
-    if (cellIsEmpty(initialValue) && defaultValue !== undefined) {
-      transformedValue = defaultValue;
-    } else {
-      if (ignoreRowIfTruthy) {
-        if (initialValue) {
-          return null;
-        }
-      } else if (ignoreRowIfFalsy) {
-        if (!initialValue) {
-          return null;
-        }
-      } else {
-        /* Note that an empty value is OK if `ignoreRowIfTruthy`, because the value is discarded. */
-        if (cellIsEmpty(initialValue)) {
-          if (defaultValue !== undefined) {
-            transformedValue = defaultValue;
-          } else {
-            if (!disallowEmptyCellsInColumn) {
-              transformedValue = null;
-            } else {
-              throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
-            }
-          }
-        } else {
-          const isValidOptions = {
-            validators: cellValidators,
-            dataType,
-            permittedValues,
-          };
-          if (!isValid(initialValue, isValidOptions)) {
-            throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
-          }
-        }
-      }
-      transformedValue = transform(transformedValue, [
-        ...globalCellTransformers, ...cellTransformers,
-      ]);
+    if ((ignoreRowIfTruthy && !!transformedValue) || (ignoreRowIfFalsy && !transformedValue)) {
+      skipRow = true;
+      return;
     }
-    if (!ignoreRowIfTruthy) {
-      transformedRow[outputProperty] = transformedValue;
+
+    const isValidOptions = {
+      validators: cellValidators,
+      dataType,
+      permittedValues,
+    };
+    if (!isValid(transformedValue, isValidOptions)) {
+      throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
     }
+
+    transformedValue = transform(transformedValue, [
+      ...globalCellTransformers, ...cellTransformers,
+    ]);
+    transformedRow[outputProperty] = transformedValue;
+  });
+
+  if (skipRow) {
+    return null;
   }
   return transform(transformedRow, rowTransformers);
 }

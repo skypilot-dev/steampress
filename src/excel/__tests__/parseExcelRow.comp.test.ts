@@ -103,14 +103,14 @@ describe('parseExcelRow()', () => {
 
     it('if a cell in that column has falsy content, should skip the row', () => {
       const excelRow: ExcelRow = {
-        A: undefined,
+        A: null,
         B: 2,
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
       expect(jsonRow).toEqual(null);
     });
 
-    it('if a cell in that column does not have falsy content, should not skip the row', () => {
+    it('if a cell in that column has truthy content, should not skip the row', () => {
       const excelRow: ExcelRow = {
         A: 1,
         B: 2,
@@ -137,21 +137,21 @@ describe('parseExcelRow()', () => {
       expect(jsonRow).toEqual(null);
     });
 
-    it('if a cell in that column is empty, should omit the column but not skip the row', () => {
+    it('if a cell in that column is empty, should not skip the row', () => {
       const excelRow: ExcelRow = {
         A: undefined,
         B: 2,
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({ B: 2 });
+      expect(jsonRow).toEqual({ A: null, B: 2 });
     });
 
-    it('if a cell in that column is empty or falsy, should omit the column not skip the row', () => {
+    it('if a cell in that column is not truthy, should not skip the row', () => {
       const falsyValues = [0, ''];
       falsyValues.forEach((falsyValue) => {
         const excelRow: ExcelRow = { A: falsyValue, B: 2 };
         const jsonRow = parseExcelRow(excelRow, rowOptions);
-        expect(jsonRow).toEqual({ B: 2 });
+        expect(jsonRow).toEqual({ A: falsyValue, B: 2 });
       });
     });
   });
@@ -211,7 +211,7 @@ describe('parseExcelRow()', () => {
         A: undefined,
       };
       const jsonRow = parseExcelRow(excelRow, rowOptions);
-      expect(jsonRow).toEqual({});
+      expect(jsonRow).toEqual({ A: null });
     });
   });
 
@@ -278,14 +278,21 @@ describe('parseExcelRow()', () => {
       expect(parsedRow).toEqual({ A: null });
     });
 
-    it('if the cell is empty, no default value is defined, & empty values are allowed, validators should be skipped', () => {
+    it('if ignoreRowIfFalsy=true and the cell has content, validators should be run', () => {
       const cellValidators = [alwaysFails];
       const rowOptions: ParseRowOptions = {
-        columns: { A: { cellValidators, dataType: 'string', defaultValue: null } },
+        columns: {
+          A: {
+            cellValidators,
+            dataType: 'string',
+            ignoreRowIfFalsy: true,
+          },
+        },
       };
-      const excelRow: ExcelRow = { A: undefined };
-      const parsedRow = parseExcelRow(excelRow, rowOptions);
-      expect(parsedRow).toEqual({ A: null });
+      const excelRow: ExcelRow = { A: 'name' };
+      expect(() => {
+        parseExcelRow(excelRow, rowOptions);
+      }).toThrow();
     });
   });
 });

@@ -83,7 +83,9 @@ export function isValid(value: any, options: IsValidOptions): boolean {
     validators.unshift(makePermittedValuesValidator(permittedValues, dataType));
   }
 
-  validators.unshift(makeTypeValidator(dataType));
+  if (value !== null) {
+    validators.unshift(makeTypeValidator(dataType));
+  }
 
   if (!allowUndefined) {
     validators.unshift(isDefined);
