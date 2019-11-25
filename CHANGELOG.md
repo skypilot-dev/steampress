@@ -1,3 +1,9 @@
+## <small>1.1.2 (2019-11-25)</small>
+
+* Add missing details to package file ([1291d27](https://github.com/skypilotcc/steampress/commit/1291d27))
+
+
+
 ## <small>1.1.1 (2019-11-25)</small>
 
 * fix: When false, 'ignore row' checks should not bypass validators 0a48a37
