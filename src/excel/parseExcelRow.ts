@@ -61,6 +61,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       dataType,
       defaultValue,
       disallowEmptyCellsInColumn = disallowEmptyCellsInRow,
+      exclude,
       ignoreRowIfFalsy, // deprecated
       ignoreRowIfTruthy, // deprecated
       ignoreRowIf = convertDeprecatedIgnoreRowIf(ignoreRowIfFalsy, ignoreRowIfTruthy),
@@ -73,7 +74,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
 
     if (cellIsEmpty(actualValue)) {
       /* If `defaultValue` is set, `ignoreRowIf` and `disallowEmptyCellsInColumn` are ignored. */
-      if (defaultValue !== undefined) {
+      if (!exclude && defaultValue !== undefined) {
         /* The cell is empty and a default has been provided, so use the default and return. */
         transformedRow[outputProperty] = defaultValue;
         return;
@@ -85,7 +86,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
           skipRow = true;
           return;
         }
-      } else if (disallowEmptyCellsInColumn) {
+      } else if (!exclude && disallowEmptyCellsInColumn) {
         /* TODO: Log an exception instead of throwing an error. */
         throw new Error(`ERROR: Row ${rowIndex + 1} contains no value for '${outputProperty}', but the cell cannot be empty and no default value has been set`);
       }
@@ -100,6 +101,10 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       (ignoreRowIf === 'truthy' && !!initialValue) || (ignoreRowIf === 'falsy' && !initialValue)
     ) {
       skipRow = true;
+      return;
+    }
+
+    if (exclude) {
       return;
     }
 

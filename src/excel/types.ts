@@ -28,10 +28,11 @@ export interface ParseColumnOptions {
   dataType?: CellDataType;
   defaultValue?: any;
   disallowEmptyCellsInColumn?: boolean; // ignored if `defaultValue` is set or `ignoreRowIf='empty'`
+  exclude?: boolean | ((...args: any[]) => boolean); // if true, exclude this column from the output
   expectedHeader?: string;
   ignoreRowIf?: IgnoreRowIf; // ignored if `defaultValue` is set
-  ignoreRowIfFalsy?: boolean;
-  ignoreRowIfTruthy?: boolean;
+  ignoreRowIfFalsy?: boolean; // DEPRECATED
+  ignoreRowIfTruthy?: boolean; // DEPRECATED
   outputProperty?: string;
   permittedValues?: any[];
 }

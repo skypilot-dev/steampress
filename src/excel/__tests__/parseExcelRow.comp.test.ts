@@ -1,6 +1,6 @@
 import { CELL_DATA_TYPE_SUPERTYPES, CELL_DATA_TYPES } from '../isValid';
 import { parseExcelRow } from '../parseExcelRow';
-import { CellDataType, ExcelRow, IgnoreRowIf, ParseRowOptions } from '../types';
+import { CellDataType, ExcelRow, IgnoreRowIf, ParseColumnOptions, ParseRowOptions } from '../types';
 
 
 const samplePermittedValueLists = {
@@ -336,6 +336,33 @@ describe('parseExcelRow()', () => {
       expect(() => {
         parseExcelRow(excelRow, rowOptions);
       }).toThrow();
+    });
+  });
+
+  describe('when `exclude=true`', () => {
+    it('the cell should never be included in the output', () => {
+      const excelRow: ExcelRow = { A: 0, B: undefined };
+      const columnOptions: Partial<ParseColumnOptions>[] = [
+        { defaultValue: 1 },
+        { ignoreRowIf: 'truthy' },
+        { disallowEmptyCellsInColumn: true },
+      ];
+      columnOptions.forEach((options) => {
+        const rowOptions = {
+          columns: {
+            A: {
+              ...options,
+              exclude: true,
+            },
+            B: {
+              ...options,
+              exclude: true,
+            },
+          },
+        };
+        const parsedRow = parseExcelRow(excelRow, rowOptions);
+        expect(parsedRow).toEqual({});
+      });
     });
   });
 });
