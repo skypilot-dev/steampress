@@ -1,3 +1,9 @@
+## 1.2.0 (2019-11-26)
+
+* add: Can conditionally exclude a cell from the output ([7b4fc02](https://github.com/skypilotcc/steampress/commit/7b4fc02))
+
+
+
 ## <small>1.1.3 (2019-11-25)</small>
 
 
