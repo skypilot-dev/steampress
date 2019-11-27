@@ -56,6 +56,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       return;
     }
     const {
+      cellPrevalidationTransformers = [],
       cellTransformers = [],
       cellValidators = [],
       dataType,
@@ -93,8 +94,8 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       /* Use a value of `null` for empty cells. */
       initialValue = null;
     } else {
-      /* The cell is not empty, so start with the value it contains. */
-      initialValue = actualValue as Literal | null;
+      /* The cell is not empty, so start with the value it contains and apply pretransformers. */
+      initialValue = transform(actualValue as Literal | null, cellPrevalidationTransformers);
     }
 
     if (

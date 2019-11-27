@@ -365,4 +365,22 @@ describe('parseExcelRow()', () => {
       });
     });
   });
+
+  /* TODO: Rewrite this test for readability. */
+  describe('when `cellPrevalidationTransformers` is set', () => {
+    it('cell values should be transformed before validation', () => {
+      const rowOptions: ParseRowOptions = {
+        columns: {
+          A: {
+            cellPrevalidationTransformers: [(val: number) => val + 1],
+            cellValidators: [(val: number) => val === 1],
+            cellTransformers: [(val: number) => val + 1],
+          },
+        },
+      };
+      const excelRow: ExcelRow = { A: 0 };
+      const parsedRow = parseExcelRow(excelRow, rowOptions);
+      expect(parsedRow).toEqual({ A: 2 });
+    });
+  });
 });

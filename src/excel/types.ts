@@ -23,6 +23,7 @@ export interface ExcelRow {
 }
 
 export interface ParseColumnOptions {
+  cellPrevalidationTransformers?: Transformer[];
   cellTransformers?: Transformer[];
   cellValidators?: Validator[];
   dataType?: CellDataType;
