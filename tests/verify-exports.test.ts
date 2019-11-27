@@ -10,6 +10,9 @@ const intendedExports = [
   'addProperty',
   'duplicateProperty',
 
+  /* -- Validators */
+  'matchesPattern',
+
   /* re-exported string functions */
   'capitalizeAllWords',
   'capitalizeFirstWord',

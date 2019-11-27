@@ -1,0 +1,1 @@
+export { matchesPattern } from './matchesPattern';
