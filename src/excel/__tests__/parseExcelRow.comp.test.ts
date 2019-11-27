@@ -339,7 +339,7 @@ describe('parseExcelRow()', () => {
     });
   });
 
-  describe('when `exclude=true`', () => {
+  describe('when `excludeThisColumn=true`', () => {
     it('the cell should never be included in the output', () => {
       const excelRow: ExcelRow = { A: 0, B: undefined };
       const columnOptions: Partial<ParseColumnOptions>[] = [
@@ -352,11 +352,11 @@ describe('parseExcelRow()', () => {
           columns: {
             A: {
               ...options,
-              exclude: true,
+              excludeThisColumn: true,
             },
             B: {
               ...options,
-              exclude: true,
+              excludeThisColumn: true,
             },
           },
         };
