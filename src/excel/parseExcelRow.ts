@@ -118,7 +118,9 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
       permittedValues,
     };
     if (!isValid(transformedValue, isValidOptions)) {
-      throw new Error(`ERROR: Row ${rowIndex + 1} contains an invalid value for '${outputProperty}': ${initialValue}`);
+      throw new Error(
+        `ERROR: Row ${rowIndex + 1} contains an invalid value in column ${columnLetter} (${outputProperty}): ${JSON.stringify(actualValue)}`
+      );
     }
 
     transformedValue = transform(transformedValue, [
