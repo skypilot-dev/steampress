@@ -1,3 +1,11 @@
+## 1.3.0 (2019-11-27)
+
+* chg!: Renamed `exclude` to `excludeThisColumn` for clarity ([6c78491](https://github.com/skypilotcc/steampress/commit/6c78491))
+* add: Can check whether cell content matches a regular expression ([d363175](https://github.com/skypilotcc/steampress/commit/d363175))
+* add: Can transform cell content prior to validation ([7fe3fc3](https://github.com/skypilotcc/steampress/commit/7fe3fc3))
+
+
+
 ## 1.2.0 (2019-11-26)
 
 * add: Can conditionally exclude a cell from the output ([7b4fc02](https://github.com/skypilotcc/steampress/commit/7b4fc02))
