@@ -1,3 +1,10 @@
+## <small>1.3.1 (2019-12-07)</small>
+
+* Update all dependencies ([4f2eabf](https://github.com/skypilotcc/steampress/commit/4f2eabf))
+* add: Show more informative error message when invalid data is found ([941f475](https://github.com/skypilotcc/steampress/commit/941f475))
+
+
+
 ## 1.3.0 (2019-11-27)
 
 * chg!: Renamed `exclude` to `excludeThisColumn` for clarity ([6c78491](https://github.com/skypilotcc/steampress/commit/6c78491))
