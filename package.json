@@ -42,18 +42,24 @@
   ],
   "scripts": {
     "all-ci-checks": "yarn run all-cq-checks && yarn run build",
-    "all-cq-checks": "yarn run check-types && yarn run lint --quiet && yarn test",
+    "all-cq-checks": "yarn run typecheck && yarn run lint --quiet && yarn test",
     "build": "rm -rf lib && yarn run compile-ts",
     "check-types": "tsc",
     "ci": "yarn run all-ci-checks",
-    "compile-ts": "babel ./src --out-dir ./lib --extensions .ts --ignore '**/*.test.ts'",
+    "compile-ts": "babel ./src --out-dir ./lib --extensions .ts --ignore '**/__tests__/*' --ignore '**/*.d.ts' && yarn run generate-typings",
     "cq": "yarn run all-cq-checks",
     "generate-typings": "tsc --project tsconfig.generate-typings.json",
     "lint": "eslint --cache '**/*.{js,ts}'",
-    "prepublishOnly": "yarn run check-types && yarn run lint --quiet && yarn test && yarn run build && yarn run generate-typings",
-    "test": "jest"
+    "prepublishOnly": "yarn run typecheck && yarn run lint --quiet && yarn test && yarn run build",
+    "publish:default": "yarn publish --non-interactive",
+    "tc": "yarn run typecheck",
+    "test": "jest",
+    "typecheck": "tsc"
   },
   "private": false,
   "license": "ISC",
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
 }
