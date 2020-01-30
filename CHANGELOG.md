@@ -1,3 +1,11 @@
+## <small>1.3.2 (2020-01-30)</small>
+
+* Automatically publish master & edge releases ([82c12d1](https://github.com/skypilotcc/steampress/commit/82c12d1))
+* refactor: Update all dependencies ([ec1c1ff](https://github.com/skypilotcc/steampress/commit/ec1c1ff))
+* refactor: Update Toolchain tooling configs ([63f8d70](https://github.com/skypilotcc/steampress/commit/63f8d70))
+
+
+
 ## <small>1.3.1 (2019-12-07)</small>
 
 * Update all dependencies ([4f2eabf](https://github.com/skypilotcc/steampress/commit/4f2eabf))
