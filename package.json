@@ -26,12 +26,12 @@
     "transform"
   ],
   "dependencies": {
-    "@skypilot/sugarbowl": "^1.4.2",
+    "@skypilot/sugarbowl": "^1.4.3",
     "convert-excel-to-json": "^1.6.1"
   },
   "devDependencies": {
     "@skypilot/common-types": "^1.0.1",
-    "@skypilot/toolchain": "^2.0.2"
+    "@skypilot/toolchain": "^2.0.4"
   },
   "files": [
     "/lib"

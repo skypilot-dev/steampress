@@ -7,7 +7,10 @@ on:
       - 'beta'
       - 'next'
     paths-ignore:
-      - 'README.md'
+      - 'docs/**'
+      - '**.md'
+      - 'LICENSE'
+      - 'package.json'
 
 jobs:
   prerelease:
@@ -43,6 +46,8 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > .npmrc
           yarn install --frozen-lockfile --production=false
+          yarn add @skypilot/bump-version conventional-changelog-cli@2 finepack@2
+          git checkout -- .
       - name: Bump version
         if: success()
         run: |
