@@ -2,7 +2,7 @@
   "name": "@skypilot/steampress",
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
   "homepage": "https://github.com/skypilotcc/steampress#readme",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "main": "lib/index.js",
   "author": {
     "email": "wthorsen@skypilot.dev",
