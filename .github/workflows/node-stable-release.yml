@@ -1,0 +1,77 @@
+name: Stable release
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'package.json'
+      - 'README.md'
+
+jobs:
+  stable-release:
+    name: Create stable release
+
+    env:
+      CI: true
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      SP_RELEASE_TOKEN: ${{ secrets.SP_RELEASE_TOKEN }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.SP_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Fetch
+        run: |
+          git fetch --prune --unshallow
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > .npmrc
+          yarn install --frozen-lockfile --production=false
+      - name: Lint config files
+        run: yarn --silent finepack
+      - name: Gather published versions
+        run: |
+          mkdir -p local
+          yarn info --silent . versions > local/published-versions.txt
+      - name: Bump version
+        if: success()
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name ${GITHUB_ACTOR}
+          yarn --silent bump-version && yarn --silent conventional-changelog -p angular -r 0 > CHANGELOG.md
+      - name: Publish
+        if: success()
+        run: |
+          if test -n "$NPM_AUTH_TOKEN" ; then
+            yarn config set //registry.yarnpkg.com/:_authToken=$NPM_AUTH_TOKEN
+            yarn run publish:default
+          else
+            echo "No NPM_AUTH_TOKEN found. Skipping publication"
+          fi
+      - name: Commit files
+        if: success()
+        run: |
+          git commit --all --message "Release $(yarn --silent get-current-version)"
+      - name: Tag
+        if: success()
+        run: |
+          git tag -a v$(yarn --silent get-current-version) -m "Release $(yarn --silent get-current-version)"
+      - name: Push changes
+        if: success()
+        run: git push --tags origin $(git symbolic-ref --short HEAD)
