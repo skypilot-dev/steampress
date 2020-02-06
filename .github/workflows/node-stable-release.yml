@@ -5,8 +5,9 @@ on:
     branches:
       - 'master'
     paths-ignore:
+      - '**/*.md'
       - 'docs/**'
-      - '**.md'
+      - '*.md'
       - 'LICENSE'
       - 'package.json'
 
