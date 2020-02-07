@@ -1256,15 +1256,15 @@
   resolved "https://registry.yarnpkg.com/@skypilot/common-types/-/common-types-1.0.2.tgz#13d398f87b7670cc4103feab5272c600fd3de608"
   integrity sha512-+PpsOaEj1oQUsfZwm60WV7QP65QBEKm3rtJosxnBPJGOWurhc6s93yik+v8VjwIWIoHGYqhOUcOPL4qjHh2GLw==
 
-"@skypilot/sugarbowl@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@skypilot/sugarbowl/-/sugarbowl-1.4.3.tgz#e388117f32201d873778a701159f056357eb38d2"
-  integrity sha512-ov2VPfsJuFOwIyfu9kqWXZOJgD4WO77MD0wt1YP+NfbGKR2aaX618V8AdDIwoEcT+fWXZ+qJ9/Icct6d8iLQaQ==
+"@skypilot/sugarbowl@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@skypilot/sugarbowl/-/sugarbowl-1.4.4.tgz#2c886b7bb8e1099927fa8d793b3230d12be1425b"
+  integrity sha512-hIMvop/lFJSuTOiO1R9kOgTP5Agr9RQavKTUWBX7DAO4JLOOXCGOZb0at+4R959parsfPPgy2nvUfEwayis4xg==
 
-"@skypilot/toolchain@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@skypilot/toolchain/-/toolchain-2.1.3.tgz#29fa68e1a81904af90e0433ae3d63a48c508f2cf"
-  integrity sha512-X64hXU2rZY92pJYaDgqNkL73mHlhTAUBHVjUYTkPn1QFsMlU1UFNX8vvUhOpSA7l72IyT7wR07E2pfia3hu6Vw==
+"@skypilot/toolchain@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@skypilot/toolchain/-/toolchain-2.1.4.tgz#677f81ff7bdcb13df59d297e117238f8f61dcb2e"
+  integrity sha512-K/Nzw1MEzX3x4ykUIJ5I+nIYSFnztBM277DJZGr4g1Ugsl8A8sfpLrSon4MU221CibCBRHn7WrLONvcY85QdWA==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/core" "^7.8.4"
