@@ -1,0 +1,125 @@
+name: Stable release
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '*.md'
+      - 'LICENSE'
+      - 'package.json'
+
+jobs:
+  stable-release:
+    name: Create stable release
+
+    env:
+      CI: true
+      GPG_KEY: ${{ secrets.SPQR_BOT_GPG_KEY }}
+      GPG_KEY_ID: ${{ secrets.SPQR_BOT_GPG_KEY_ID }}
+      NPM_READ_TOKEN: ${{ secrets.NPM_READ_AND_PUBLISH_TOKEN || secrets.NPM_READ_TOKEN }}
+      NPM_READ_AND_PUBLISH_TOKEN: ${{ secrets.NPM_READ_AND_PUBLISH_TOKEN }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.SPQR_GITHUB_PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Fetch
+        run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          git fetch --unshallow origin master
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_READ_TOKEN" > .npmrc
+          yarn install --frozen-lockfile --production=false
+          yarn add @skypilot/quick-release conventional-changelog-cli@2 finepack@2 --production=false
+          git checkout -- .
+      - name: Lint config files
+        run: yarn --silent finepack
+      - name: Check types
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'release.check-code') == 'true' ]] ; then
+            yarn run typecheck
+          fi
+      - name: Lint
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'release.check-code') == 'true' ]] ; then
+            yarn run lint --no-cache --quiet
+          fi
+      - name: Test
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'release.check-code') == 'true' ]] ; then
+            yarn test
+          fi
+      - name: Build
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'release.build') == 'true' ]] ; then
+            yarn build
+          fi
+      - name: Gather published versions
+        run: |
+          mkdir -p local
+          yarn info --silent . versions > local/published-versions.txt
+      - name: Bump version
+        if: success()
+        run: yarn --silent bump-version && yarn --silent conventional-changelog -p angular -r 0 > CHANGELOG.md
+      - name: Publish
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option release.publish) == 'true' ]] ; then
+            if test -z "$NPM_READ_AND_PUBLISH_TOKEN" ; then
+              echo "No NPM_READ_AND_PUBLISH_TOKEN found. Skipping publication"
+            else
+              yarn config set //registry.yarnpkg.com/:_authToken=$NPM_READ_AND_PUBLISH_TOKEN
+              yarn publish --access $(yarn --silent spqr-option release.access) --non-interactive
+            fi
+          else
+            echo "release.publish = false. Skipping publication."
+            echo "To publish, set \`release.publish: true\` in .skypilot/quick-release.yaml."
+          fi
+      - name: Configure identity
+        if: success()
+        run: |
+          git config --global user.email "$(yarn --silent spqr-option bot.email)"
+          git config --global user.name "$(yarn --silent spqr-option bot.name)"
+          if test -n "$GPG_KEY" && test -n "$GPG_KEY_ID"; then
+            echo "$GPG_KEY" | base64 -d > private.key
+            gpg --import ./private.key
+            rm ./private.key
+            git config --global commit.gpgsign true
+            git config --global tag.gpgsign true
+            git config --global user.signingkey $GPG_KEY_ID
+          else
+            echo "GPG_KEY and/or GPG_KEY_ID is undefined in GitHub Secrets. The commit & tag will not be signed."
+          fi
+      - name: Commit files
+        if: success()
+        run: |
+          git add package.json CHANGELOG.md
+          git commit --message "Release $(yarn --silent get-current-version)"
+      - name: Tag
+        if: success()
+        run: |
+          git tag -a v$(yarn --silent get-current-version) -m "Release $(yarn --silent get-current-version)"
+      - name: Push changes
+        if: success()
+        run: git push --tags origin $(git symbolic-ref --short HEAD)

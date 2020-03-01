@@ -1,0 +1,129 @@
+name: Prerelease
+
+on:
+  push:
+    branches:
+      - 'alpha'
+      - 'beta'
+      - 'next'
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '*.md'
+      - 'LICENSE'
+      - 'package.json'
+
+jobs:
+  prerelease:
+    name: Create prerelease
+
+    env:
+      CI: true
+      GPG_KEY: ${{ secrets.SPQR_BOT_GPG_KEY }}
+      GPG_KEY_ID: ${{ secrets.SPQR_BOT_GPG_KEY_ID }}
+      NPM_READ_TOKEN: ${{ secrets.NPM_READ_AND_PUBLISH_TOKEN || secrets.NPM_READ_TOKEN }}
+      NPM_READ_AND_PUBLISH_TOKEN: ${{ secrets.NPM_READ_AND_PUBLISH_TOKEN }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.SPQR_GITHUB_PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Fetch
+        run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          git fetch --unshallow origin 'master:master'
+          git fetch origin $(git symbolic-ref --short HEAD)
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_READ_TOKEN" > .npmrc
+          yarn install --frozen-lockfile --production=false
+          yarn add @skypilot/quick-release conventional-changelog-cli@2 finepack@2 --production=false
+          git checkout -- .
+      - name: Check types
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'prerelease.check-code') == 'true' ]] ; then
+            yarn run typecheck
+          fi
+      - name: Lint
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'prerelease.check-code') == 'true' ]] ; then
+            yarn run lint --no-cache --quiet
+          fi
+      - name: Test
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'prerelease.check-code') == 'true' ]] ; then
+            yarn test
+          fi
+      - name: Build
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option 'prerelease.build') == 'true' ]] ; then
+            yarn build
+          fi
+      - name: Gather published versions
+        run: |
+          mkdir -p local
+          yarn info --silent . versions > local/published-versions.txt
+      - name: Bump version
+        if: success()
+        run: yarn --silent bump-version
+      - name: Publish
+        if: success()
+        run: |
+          if [[ $(yarn --silent spqr-option prerelease.publish) == 'true' ]] ; then
+            if test -z "$NPM_READ_AND_PUBLISH_TOKEN" ; then
+              echo "No NPM_READ_AND_PUBLISH_TOKEN found. Skipping publication"
+            else
+              if [[ $(yarn --silent is-published $(yarn --silent get-current-version)) == true ]]; then
+                echo "$(yarn --silent get-current-version) has already been published. Skipping publication."
+              else
+                yarn config set //registry.yarnpkg.com/:_authToken=$NPM_READ_AND_PUBLISH_TOKEN
+                yarn publish --access $(yarn --silent spqr-option prerelease.access) --non-interactive --tag $(git symbolic-ref --short HEAD)
+              fi
+            fi
+          else
+            echo "prerelease.publish = false. Skipping publication."
+            echo "To publish, set \`prerelease.publish: true\` in .skypilot/quick-release.yaml."
+          fi
+      - name: Configure identity
+        if: success()
+        run: |
+          git config --global user.email "$(yarn --silent spqr-option bot.email)"
+          git config --global user.name "$(yarn --silent spqr-option bot.name)"
+          if test -n "$GPG_KEY" && test -n "$GPG_KEY_ID"; then
+            echo "$GPG_KEY" | base64 -d > private.key
+            gpg --import ./private.key
+            rm ./private.key
+            git config --global commit.gpgsign true
+            git config --global tag.gpgsign true
+            git config --global user.signingkey $GPG_KEY_ID
+          else
+            echo "GPG_KEY and/or GPG_KEY_ID is undefined in GitHub Secrets. The tag will not be signed."
+          fi
+      - name: Tag
+        if: success()
+        run: |
+          if [[ $(yarn --silent is-tagged $(yarn --silent get-current-version)) == true ]]; then
+            echo "$(yarn --silent get-current-version) has already been tagged. Skipping tagging."
+          else
+            git tag -a v$(yarn --silent get-current-version) -m "Prerelease $(yarn --silent get-current-version)"
+          fi
+      - name: Push tag
+        if: success()
+        run: git push --tags

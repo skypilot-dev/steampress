@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@skypilot/toolchain/lib/configs/tsconfig.generate-typings.json",
+  "extends": "@skypilot/toolchain/configs/tsconfig.generate-typings.json",
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src"

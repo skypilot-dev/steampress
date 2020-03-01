@@ -1,3 +1,5 @@
-const { lintStagedConfigurator } = require('@skypilot/toolchain');
-
-module.exports = lintStagedConfigurator();
+module.exports = {
+  '*.{js,ts}': [
+    'eslint --cache --no-fix',
+  ],
+};
