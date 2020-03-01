@@ -1,3 +1,11 @@
+## [1.3.7](https://github.com/skypilotcc/steampress/compare/v1.3.7-next.0...v1.3.7) (2020-03-01)
+
+
+
+## [1.3.7-next.0](https://github.com/skypilotcc/steampress/compare/v1.3.6...v1.3.7-next.0) (2020-03-01)
+
+
+
 ## [1.3.6](https://github.com/skypilotcc/steampress/compare/v1.3.6-next.0...v1.3.6) (2020-02-07)
 
 
@@ -68,7 +76,7 @@
 
 
 
-# [1.0.0](https://github.com/skypilotcc/steampress/compare/v0.5.0-alpha...1.0.0) (2019-11-24)
+# [1.0.0](https://github.com/skypilotcc/steampress/compare/v0.5.9-alpha...1.0.0) (2019-11-24)
 
 
 * chg!: Rename options controlling whether empty cells are disallowed ([b9a0ace](https://github.com/skypilotcc/steampress/commit/b9a0acee8becd829bb0bb4d562c88d3be31bd44e))
@@ -76,16 +84,28 @@
 * chg!: Rename cell 'transformers' option to 'cellTransformers' ([07e591b](https://github.com/skypilotcc/steampress/commit/07e591b4f0f3b7868372fd33680f088aec2bb8c3))
 
 
-### Features
-
-* Can use a named export instead of a default export ([1f54c8c](https://github.com/skypilotcc/steampress/commit/1f54c8c34b04960e9e85b251b2ee038d2a5d7cdd))
-
-
 ### BREAKING CHANGES
 
 * The `disallowEmptyCells` property of `ParseSheetOptions` and `ParseColumnOptions` has been renamed to `disallowEmptyCellsInSheet` and `disallowEmptyCellsInColumn` for clarity
 * The change is one of a series of changes intended to avoid confusion among the various kinds of transformers.
 * The `transformers` option of `ParseColumnOptions` has been renamed to `cellTransformers`. The change has been made for the sake of clarity (it might have been assumed that the transformers applied to the entire column), and also to make room for an eventual `columnTransformers` property.
+
+
+
+## [0.5.9-alpha](https://github.com/skypilotcc/steampress/compare/v0.5.8-alpha...v0.5.9-alpha) (2019-11-20)
+
+
+### Features
+
+* Can use a named export instead of a default export ([1f54c8c](https://github.com/skypilotcc/steampress/commit/1f54c8c34b04960e9e85b251b2ee038d2a5d7cdd))
+
+
+
+## [0.5.8-alpha](https://github.com/skypilotcc/steampress/compare/v0.5.6-alpha...v0.5.8-alpha) (2019-11-18)
+
+
+
+## [0.5.6-alpha](https://github.com/skypilotcc/steampress/compare/v0.5.0-alpha...v0.5.6-alpha) (2019-11-04)
 
 
 
