@@ -1,3 +1,11 @@
+## [1.3.9](https://github.com/skypilotcc/steampress/compare/v1.3.9-next.0...v1.3.9) (2020-03-12)
+
+
+
+## [1.3.9-next.0](https://github.com/skypilotcc/steampress/compare/v1.3.8...v1.3.9-next.0) (2020-03-12)
+
+
+
 ## [1.3.8](https://github.com/skypilotcc/steampress/compare/v1.3.8-next.0...v1.3.8) (2020-03-01)
 
 
@@ -6,35 +14,19 @@
 
 
 
-## [1.3.7](https://github.com/skypilotcc/steampress/compare/v1.3.7-next.0...v1.3.7) (2020-03-01)
+## [1.3.7](https://github.com/skypilotcc/steampress/compare/v1.3.6...v1.3.7) (2020-03-01)
 
 
 
-## [1.3.7-next.0](https://github.com/skypilotcc/steampress/compare/v1.3.6...v1.3.7-next.0) (2020-03-01)
+## [1.3.6](https://github.com/skypilotcc/steampress/compare/v1.3.5...v1.3.6) (2020-02-07)
 
 
 
-## [1.3.6](https://github.com/skypilotcc/steampress/compare/v1.3.6-next.0...v1.3.6) (2020-02-07)
+## [1.3.5](https://github.com/skypilotcc/steampress/compare/v1.3.4...v1.3.5) (2020-02-06)
 
 
 
-## [1.3.6-next.0](https://github.com/skypilotcc/steampress/compare/v1.3.5...v1.3.6-next.0) (2020-02-07)
-
-
-
-## [1.3.5](https://github.com/skypilotcc/steampress/compare/v1.3.5-next.0...v1.3.5) (2020-02-06)
-
-
-
-## [1.3.5-next.0](https://github.com/skypilotcc/steampress/compare/v1.3.4...v1.3.5-next.0) (2020-02-06)
-
-
-
-## [1.3.4](https://github.com/skypilotcc/steampress/compare/v1.3.4-next.0...v1.3.4) (2020-02-06)
-
-
-
-## [1.3.4-next.0](https://github.com/skypilotcc/steampress/compare/v1.3.3...v1.3.4-next.0) (2020-02-06)
+## [1.3.4](https://github.com/skypilotcc/steampress/compare/v1.3.3...v1.3.4) (2020-02-06)
 
 
 
@@ -109,15 +101,7 @@
 
 
 
-## [0.5.8-alpha](https://github.com/skypilotcc/steampress/compare/v0.5.6-alpha...v0.5.8-alpha) (2019-11-18)
-
-
-
-## [0.5.6-alpha](https://github.com/skypilotcc/steampress/compare/v0.5.0-alpha...v0.5.6-alpha) (2019-11-04)
-
-
-
-# 0.5.0-alpha (2019-07-24)
+## 0.5.8-alpha (2019-11-18)
 
 
 
