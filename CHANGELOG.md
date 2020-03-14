@@ -1,3 +1,11 @@
+## [1.3.10](https://github.com/skypilotcc/steampress/compare/v1.3.10-next.0...v1.3.10) (2020-03-14)
+
+
+
+## [1.3.10-next.0](https://github.com/skypilotcc/steampress/compare/v1.3.9...v1.3.10-next.0) (2020-03-14)
+
+
+
 ## [1.3.9](https://github.com/skypilotcc/steampress/compare/v1.3.9-next.0...v1.3.9) (2020-03-12)
 
 
