@@ -1340,30 +1340,30 @@
   dependencies:
     type-detect "4.0.8"
 
-"@skypilot/babel-config-node-typescript@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@skypilot/babel-config-node-typescript/-/babel-config-node-typescript-0.1.1.tgz#06636cba539a821d0a424fb4d7b9436163c1889f"
-  integrity sha512-/DQGzERYQXBz0yNn1sHFBlaRuld0zh7C4HI4HmVKj56pv6rUHzgVjHHgVjtKcPZoy/zUoNev0fUHyFhRYHYS5Q==
+"@skypilot/babel-config-node-typescript@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@skypilot/babel-config-node-typescript/-/babel-config-node-typescript-0.1.2.tgz#b3f765a30c97fc7d8559958a6302991a1bf345d6"
+  integrity sha512-5hW8boBTjgcVWYzO/1Dm7/uTE2VZ/NT2hNpVLLP4BPy33eGpcYze23ypxTaSM8UPanJ9yW8CdRxaD9A/oSjXfg==
 
-"@skypilot/common-types@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@skypilot/common-types/-/common-types-1.4.0.tgz#c6a184ee2827302bc3c3667427cbeb8e2d8ae732"
-  integrity sha512-mNM9q1ZHnN52xj+Stawv3m4xr4NUHG/IjX9ikuvz9Xb27tUUE4cyNX46hNWQJpEutkDSLiU1xQuRwndgGHDyFA==
+"@skypilot/common-types@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@skypilot/common-types/-/common-types-1.4.2.tgz#799ff00b18ff9f740888c2a1ee63f923e097a7cc"
+  integrity sha512-urM0PGCXjrDdBu1xdeJfRsvL18TZ9zIGxrrSKXXK3u1gnJkkAGdFhim5aBUevbUWj5AyBa1/74pAV1d6xvWAfw==
 
-"@skypilot/eslint-config-typescript@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@skypilot/eslint-config-typescript/-/eslint-config-typescript-1.0.1.tgz#9688788061e4b212a4db18d6c794d2eb4bb64c41"
-  integrity sha512-eTzaemMnn13a6NG3JGEHni0J104Za+2SQtTeL9yBhAq60KC6v9wObbxxznRoMkiGZwi5mizcKGctAHiMuP1EWw==
+"@skypilot/eslint-config-typescript@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@skypilot/eslint-config-typescript/-/eslint-config-typescript-1.0.2.tgz#c3872d6aa3829c2d3c3d20370649807195dc9d63"
+  integrity sha512-XCOT+Zui9EKd7bSovmkKbXRXctaFQYMnUgbSXoba2VYWBDEUgny7i0GOI8PZRn5nXAovZ5L/pE1HspJRZXzpqg==
 
-"@skypilot/sugarbowl@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@skypilot/sugarbowl/-/sugarbowl-1.5.0.tgz#32f728aef22e4614ec6674e2f799107a22134557"
-  integrity sha512-jnCIjF6CCy2tPRXtRurgPnqr8YcWHw6zKtb8imtbU+rF37knWAsk7nP9zcS+0coG1QvemjWetDzNXl6glNgI1g==
+"@skypilot/sugarbowl@^1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@skypilot/sugarbowl/-/sugarbowl-1.5.2.tgz#9540b5a222e5792200650051d2d5bc31dfc42289"
+  integrity sha512-7sS8BF1Bxi04WhgkU8kM9UIwYMbQHpDByQU8gEQdrzDR1xkGJHRjaumZ/0tzlvdcpFbCZ41eFbQJALMk1Z28yg==
 
-"@skypilot/toolchain@^3.5.2":
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/@skypilot/toolchain/-/toolchain-3.5.2.tgz#2744e72c33b1d6f64cc3fc2a4304c22045c234d7"
-  integrity sha512-v9gVFrTxqoTTioxgcJ/rQqdsVhF/paJekxW3NOa8R2opoxeZalXE7Jwh/HnqKFTifuTvKJl3j+VhS2Bl438vCA==
+"@skypilot/toolchain@^3.5.4":
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/@skypilot/toolchain/-/toolchain-3.5.4.tgz#c030a1dea50b2c7e12bda30896a26d2ef82dec53"
+  integrity sha512-45O8UubuSOoRAgvYVGmmeNTNErz6Rm8XSs7FhoFGmMgvIueNZ1rALHAZxkaMO+DwUCsEekNdLgAowyc72scxhA==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/core" "^7.8.7"
@@ -1374,10 +1374,10 @@
     "@babel/preset-env" "^7.8.7"
     "@babel/preset-typescript" "^7.8.3"
     "@babel/runtime" "^7.8.7"
-    "@skypilot/babel-config-node-typescript" "^0.1.1"
-    "@skypilot/eslint-config-typescript" "^1.0.1"
+    "@skypilot/babel-config-node-typescript" "^0.1.2"
+    "@skypilot/eslint-config-typescript" "^1.0.2"
     "@types/jest" "^25.1.4"
-    "@types/node" "^13.9.0"
+    "@types/node" "^13.9.1"
     "@typescript-eslint/eslint-plugin" "^2.23.0"
     "@typescript-eslint/parser" "^2.23.0"
     babel-jest "^25.1.0"
@@ -1467,10 +1467,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
   integrity sha512-Il2DtDVRGDcqjDtE+rF8iqg1CArehSK84HZJCT7AMITlyXRBpuPhqGLDQMowraqqu1coEaimg4ZOqggt6L6L+A==
 
-"@types/node@^13.9.0":
-  version "13.9.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.9.0.tgz#5b6ee7a77faacddd7de719017d0bc12f52f81589"
-  integrity sha512-0ARSQootUG1RljH2HncpsY2TJBfGQIKOOi7kxzUY6z54ePu/ZD+wJA8zI2Q6v8rol2qpG/rvqsReco8zNMPvhQ==
+"@types/node@^13.9.1":
+  version "13.9.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.9.1.tgz#96f606f8cd67fb018847d9b61e93997dabdefc72"
+  integrity sha512-E6M6N0blf/jiZx8Q3nb0vNaswQeEyn0XlupO+xN6DtJ6r6IT4nXrTry7zhIfYvFCl3/8Cu6WIysmUBKiqV0bqQ==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
