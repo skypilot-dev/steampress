@@ -49,7 +49,6 @@ const converterOptions: ConvertExcelSheetToJsonOptions = {
   },
 };
 
-
 beforeAll(() => {
   if (!existsSync(tmpDirPath)) {
     mkdirSync(tmpDirPath, { recursive: true });
@@ -112,10 +111,11 @@ describe('convertExcelSheetToJson', () => {
 
       const dateValue = formulaProps[0];
       expect(isValidDate(dateValue)).toBe(true);
-      expect(dateValue.getFullYear()).toBe(1989);
+
+      expect(dateValue.getUTCFullYear()).toBe(1989);
       /* Note that `getMonth()` returns a 0-indexed value for the month. */
-      expect(dateValue.getMonth() + 1).toBe(1);
-      expect(dateValue.getDate()).toBe(28);
+      expect(dateValue.getUTCMonth() + 1).toBe(1);
+      expect(dateValue.getUTCDate()).toBe(28);
     });
 
     it('should by default save to a JSON file', () => {
