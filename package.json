@@ -1,20 +1,8 @@
 {
   "name": "@skypilot/steampress",
+  "version": "1.3.11",
+  "private": false,
   "description": "Parse, filter, and transform messy spreadsheets into clean object data",
-  "homepage": "https://github.com/skypilot-dev/steampress#readme",
-  "version": "1.3.10",
-  "main": "lib/index.js",
-  "author": {
-    "email": "wthorsen@skypilot.dev",
-    "name": "William Thorsen"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/skypilot-dev/steampress.git"
-  },
-  "bugs": {
-    "url": "https://github.com/skypilot-dev/steampress/issues"
-  },
   "keywords": [
     "conversion",
     "converter",
@@ -25,14 +13,21 @@
     "spreadsheet",
     "transform"
   ],
-  "dependencies": {
-    "@skypilot/sugarbowl": "^1.15.2",
-    "convert-excel-to-json": "^1.6.1"
+  "homepage": "https://github.com/skypilot-dev/steampress#readme",
+  "bugs": {
+    "url": "https://github.com/skypilot-dev/steampress/issues"
   },
-  "devDependencies": {
-    "@skypilot/common-types": "^1.7.2",
-    "@skypilot/toolchain": "^4.0.3"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skypilot-dev/steampress.git"
   },
+  "license": "ISC",
+  "author": {
+    "name": "William Thorsen",
+    "email": "wthorsen@skypilot.dev"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "/lib"
   ],
@@ -52,10 +47,15 @@
     "test": "jest",
     "typecheck": "tsc"
   },
-  "private": false,
-  "license": "ISC",
+  "dependencies": {
+    "@skypilot/sugarbowl": "^1.15.2",
+    "convert-excel-to-json": "^1.6.1"
+  },
+  "devDependencies": {
+    "@skypilot/common-types": "^1.7.2",
+    "@skypilot/toolchain": "^4.0.3"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "types": "lib/index.d.ts"
+  }
 }
