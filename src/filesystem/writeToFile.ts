@@ -18,7 +18,8 @@ function createDirIfNonexistent(dir: string): void {
 }
 /* -- End of helper functions */
 
-export function writeToFile(obj: object, {
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export function writeToFile(obj: Record<string, any>, {
   baseName,
   // format = 'json',
   outDir = '.',

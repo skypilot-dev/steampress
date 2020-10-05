@@ -6,7 +6,8 @@ export interface TypeScriptFormatterOptions {
   imports?: string[];
 }
 
-export function formatAsTypeScript(data: object, options: TypeScriptFormatterOptions = {}): string {
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export function formatAsTypeScript(data: Record<string, any>, options: TypeScriptFormatterOptions = {}): string {
   const {
     declaredType = '',
     exportName = 'default',

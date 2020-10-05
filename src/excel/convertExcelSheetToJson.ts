@@ -1,4 +1,5 @@
 /* -- Imports -- */
+import { JsonMap } from '@skypilot/common-types';
 import { formatAsJson } from '../exporters/formatAsJson';
 import { formatAsTypeScript, TypeScriptFormatterOptions } from '../exporters/formatAsTypeScript';
 import { writeTextToFile } from '../filesystem/writeTextToFile';
@@ -17,7 +18,7 @@ export interface ConvertExcelSheetToJsonOptions {
   outDir?: string;
   outFile?: string;
   outFormat?: 'json' | 'typescript';
-  formatterOptions?: TypeScriptFormatterOptions | {};
+  formatterOptions?: TypeScriptFormatterOptions;
   parserOptions: ParseSheetOptions;
 }
 
@@ -35,7 +36,7 @@ const formats = {
 };
 
 /* -- Main function -- */
-export function convertExcelSheetToJson(options: ConvertExcelSheetToJsonOptions): object[] {
+export function convertExcelSheetToJson(options: ConvertExcelSheetToJsonOptions): JsonMap[] {
   const {
     noEmit = false,
     source,

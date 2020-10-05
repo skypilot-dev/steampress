@@ -6,7 +6,8 @@ interface FormatterOptions {
   prettify?: boolean;
 }
 
-export function formatAsJson(data: object, formatOptions: FormatterOptions = {}): Json {
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export function formatAsJson(data: Record<string, any>, formatOptions: FormatterOptions = {}): Json {
   const {
     prettify = true,
   } = formatOptions;
