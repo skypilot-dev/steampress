@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - 'wip-**'
       - '**-wip'
-      - 'master'
+      - 'main'
       - 'alpha'
       - 'beta'
       - 'next'
@@ -17,7 +17,7 @@ jobs:
     env:
       CI: true
       NPM_READ_TOKEN: ${{ secrets.NPM_READ_AND_PUBLISH_TOKEN || secrets.NPM_READ_TOKEN }}
-      STABLE_RELEASE_BRANCH: 'master'
+      STABLE_RELEASE_BRANCH: 'main'
 
     runs-on: ubuntu-latest
 
