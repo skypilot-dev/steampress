@@ -2,6 +2,7 @@ import { existsSync, mkdirSync } from 'fs';
 import os from 'os';
 import path from 'path';
 
+import type { JsonMap } from '@skypilot/common-types';
 import { isValidDate } from '@skypilot/sugarbowl';
 
 import { name, version } from '../../../package.json';
@@ -23,7 +24,7 @@ const converterOptions: ConvertExcelSheetToJsonOptions = {
   noEmit: true,
   outDir: `${tmpDirPath}/tests-output`,
   formatterOptions: {
-    outputType: 'QuestionCreateInput[]',
+    declaredType: 'QuestionCreateInput[]',
   },
   parserOptions: {
     columns: {
@@ -72,7 +73,7 @@ describe('convertExcelSheetToJson', () => {
 
 
   describe('convertExcelSheetToJson()', () => {
-    let parsedSheet: object[];
+    let parsedSheet: JsonMap[];
     it('should spreadsheet rows into object literals', () => {
       parsedSheet = convertExcelSheetToJson(converterOptions);
       expect(typeof parsedSheet).toBe('object');

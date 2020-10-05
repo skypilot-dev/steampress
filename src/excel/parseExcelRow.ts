@@ -1,7 +1,7 @@
 /* eslint-disable no-console, @typescript-eslint/no-explicit-any */
 
 /* -- Imports -- */
-import { JsonObject, Literal } from '@skypilot/common-types';
+import { JsonMap, Literal } from '@skypilot/common-types';
 
 import { isValid } from './isValid';
 import { transform } from './transform';
@@ -33,7 +33,7 @@ function convertDeprecatedIgnoreRowIf(
 /* Given an object containing the data from a spreadsheet row, transform the data in each desired
  * cell and return a) an object containing the transformed data or b) null if the row cannot
  * be parsed. */
-export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonObject | null {
+export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonMap | null {
   const {
     columns,
     disallowEmptyCellsInRow = false,
@@ -46,7 +46,7 @@ export function parseExcelRow(row: ExcelRow, rowOptions: ParseRowOptions): JsonO
   const desiredColumnLetters: string[] = Object.keys(columns);
 
   /* Initialize the object that will store the transformed row. */
-  const transformedRow: JsonObject = {};
+  const transformedRow: JsonMap = {};
 
   let skipRow = false;
 

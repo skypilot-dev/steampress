@@ -1,5 +1,5 @@
 /* -- Imports -- */
-import { JsonObject } from '@skypilot/common-types';
+import { JsonMap } from '@skypilot/common-types';
 
 import { removeExtraWhitespace } from '../transformers';
 
@@ -28,7 +28,7 @@ export function confirmHeaders(row: ExcelRow, sheetOptions: ParseSheetOptions): 
 }
 
 /* -- Main function -- */
-export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOptions): object[] {
+export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOptions): JsonMap[] {
   const {
     columns,
     disallowEmptyCellsInSheet = false,
@@ -51,13 +51,13 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
   }
 
   // Each row is an object having the property names defined in `Column`
-  const table: JsonObject[] = [];
+  const table: JsonMap[] = [];
 
   for (let i = startingRowIndex; i < rows.length; i += 1) {
 
     const row = rows[i];
 
-    const rowAsObj: JsonObject | null = parseExcelRow(row, {
+    const rowAsObj: JsonMap | null = parseExcelRow(row, {
       columns,
       disallowEmptyCellsInRow: disallowEmptyCellsInSheet,
       globalCellTransformers,

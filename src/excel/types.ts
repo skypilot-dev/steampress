@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* -- Imports -- */
-import { Integer, JsonObject } from '@skypilot/common-types';
-
+import { Integer, JsonMap } from '@skypilot/common-types';
 
 /* -- Typings -- */
 export type CellDataType = LiteralCellDataType | 'date' | 'integer';
@@ -12,7 +11,7 @@ export type IgnoreRowIf = 'empty' | 'falsy' | 'truthy'
 
 export type LiteralCellDataType = 'boolean' | 'number' | 'string';
 
-type ObjectArrayTransformer = (value: JsonObject[]) => JsonObject[];
+type ObjectArrayTransformer = (value: JsonMap[]) => JsonMap[];
 
 export type Transformer = (value: any) => any;
 
@@ -62,4 +61,3 @@ export interface ParseSheetOptions {
   sheetTransformers?: ObjectArrayTransformer[];
   verbose?: boolean;
 }
-
