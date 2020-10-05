@@ -48,12 +48,12 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@skypilot/sugarbowl": "^1.24.1",
+    "@skypilot/sugarbowl": "^1.24.2",
     "convert-excel-to-json": "^1.7.0"
   },
   "devDependencies": {
     "@skypilot/common-types": "^1.7.3",
-    "@skypilot/toolchain": "^4.1.3"
+    "@skypilot/toolchain": "^5.1.0"
   },
   "publishConfig": {
     "access": "public"
