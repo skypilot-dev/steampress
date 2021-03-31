@@ -1,4 +1,4 @@
-import { matchesPattern } from '../matchesPattern'
+import { matchesPattern } from '../matchesPattern';
 
 describe('matchesPattern(:pattern, :options?)(:string)', () => {
   it('should return `true` if the string matches the pattern', () => {

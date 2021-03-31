@@ -46,7 +46,7 @@ describe('parseExcelRow()', () => {
           .filter((valueDataType) => valueDataType !== dataType)
           .filter((valueDataType) => {
             const supertypes = CELL_DATA_TYPE_SUPERTYPES[valueDataType] || [];
-            return !supertypes.includes(dataType)
+            return !supertypes.includes(dataType);
           })
           .forEach((valueDataType) => {
             const rowOptions: ParseRowOptions = {

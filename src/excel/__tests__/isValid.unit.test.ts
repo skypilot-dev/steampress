@@ -97,7 +97,7 @@ describe('isValid(:cellValidators, :options)', () => {
           .filter((valueDataType) => valueDataType !== dataType)
           .filter((valueDataType) => {
             const supertypes = CELL_DATA_TYPE_SUPERTYPES[valueDataType] || [];
-            return !supertypes.includes(dataType)
+            return !supertypes.includes(dataType);
           })
           .forEach((valueDataType) => {
             const options: IsValidOptions = {

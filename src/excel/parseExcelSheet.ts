@@ -66,7 +66,7 @@ export function parseExcelSheet(rows: ExcelSheet, sheetStructure: ParseSheetOpti
       verbose,
     });
     if (rowAsObj) {
-      table.push(rowAsObj)
+      table.push(rowAsObj);
     }
   }
 

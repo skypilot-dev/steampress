@@ -1,5 +1,5 @@
 /* -- Imports -- */
-import {readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 
 import excelToJson from 'convert-excel-to-json';
 
@@ -22,7 +22,7 @@ export function excelSheetToJson({ source, sheetName }: ExcelSheetToJsonOptions)
   const fileAsJson = excelToJson({ source: file });
 
   if (!Object.keys(fileAsJson).includes(sheetName)) {
-    throw new Error(`The file does not contain a sheet named '${sheetName}'.`)
+    throw new Error(`The file does not contain a sheet named '${sheetName}'.`);
   }
 
   const sheetAsJson = fileAsJson[sheetName];
