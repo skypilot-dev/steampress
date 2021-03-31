@@ -64,7 +64,7 @@ export function convertExcelSheetToJson(options: ConvertExcelSheetToJsonOptions)
     writeTextToFile(outputText, {
       dirName: outDir,
       fileName,
-    })
+    });
   }
   return parsedExcel;
 }

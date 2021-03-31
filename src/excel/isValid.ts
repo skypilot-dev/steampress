@@ -36,7 +36,7 @@ function isDefined(value: Literal | undefined): boolean {
 function makePermittedValuesValidator(permittedValues: any[], dataType: CellDataType | 'any'): Validator {
   if (dataType === 'date') {
     return (dateToMatch: Date): boolean =>
-      permittedValues.find((date: Date) => date.getTime() === dateToMatch.getTime())
+      permittedValues.find((date: Date) => date.getTime() === dateToMatch.getTime());
   }
   return (value: any): boolean => permittedValues.includes(value);
 }
